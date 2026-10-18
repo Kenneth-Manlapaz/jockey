@@ -1,0 +1,46 @@
+# Local development: MariaDB (schema loaded from ./sql on first start) + Django.
+services:
+  db:
+    image: mariadb:10.11
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MARIADB_ROOT_PASSWORD: root-change-me
+      MARIADB_DATABASE: philippine_jockey
+      MARIADB_USER: racing_app
+      MARIADB_PASSWORD: ${DB_PASSWORD:-change-me}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d:ro   # runs 01_ then 02_ the first time only
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    build: .
+    command: >
+      sh -c "python manage.py migrate --fake-initial &&
+             python manage.py seed_demo &&
+             python manage.py runserver 0.0.0.0:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.local
+      DJANGO_SECRET_KEY: local-dev-only-key
+      DJANGO_DEBUG: "True"
+      DJANGO_ALLOWED_HOSTS: "*"
+      DB_ENGINE: mysql
+      DB_NAME: philippine_jockey
+      DB_USER: racing_app
+      DB_PASSWORD: ${DB_PASSWORD:-change-me}
+      DB_HOST: db
+      DB_PORT: "3306"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:

@@ -1,0 +1,8 @@
+import Link from 'next/link';
+import { racing, type Participant } from '@web/lib/racing';
+import { FormTable } from '@web/features/racing/components/information';
+export default async function Page({ params }: { params: Promise<{ kind: string; id: string }> }) {
+  const { kind, id } = await params;
+  const p = await racing<Participant>(`people/${encodeURIComponent(kind)}/${encodeURIComponent(id)}/`);
+  return <main className="web-main racing-page"><Link className="app-back-link" href={`/directory/${kind}`}>← Directory</Link><section className="dashboard-hero"><span className="eyebrow">{kind} PROFILE</span><h1>{p.name}</h1><p>{p.bio || 'Biography unavailable.'}</p></section><section className="web-card"><h2>Recorded performance</h2><p className="racing-muted">{p.basis}</p><div className="racing-vitals"><div><small>RECORDED FINISHES</small><strong>{p.stats.recorded_finishes}</strong></div><div><small>WINS</small><strong>{p.stats.wins}</strong></div><div><small>TOP THREE</small><strong>{p.stats.top_three}</strong></div></div></section><section className="web-card"><h2>Associated horses</h2>{p.horses.length ? p.horses.map(h => <p key={h.horse_id}><Link className="racing-link" href={`/horse/${h.horse_id}`}>{h.horse__name}</Link></p>) : <p>No recorded associations.</p>}</section><section className="web-card"><h2>Horse combinations</h2>{p.combinations.map(c => <p key={c.entry__horse_id}><Link className="racing-link" href={`/horse/${c.entry__horse_id}`}>{c.entry__horse__name}</Link> · {c.finishes} recorded finishes · {c.wins} wins</p>)}{!p.combinations.length && <p>No recorded combinations.</p>}</section><section className="web-card"><h2>Recent results</h2><FormTable rows={p.recent} /></section></main>;
+}

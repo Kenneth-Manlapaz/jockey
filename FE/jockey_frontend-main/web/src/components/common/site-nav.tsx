@@ -1,0 +1,1 @@
+export { InformationNavigation as SiteNav } from './information-navigation';

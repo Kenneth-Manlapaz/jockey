@@ -1,0 +1,10 @@
+# Pin exact versions for production once you have tested them (pip freeze > requirements.lock).
+Django>=5.2,<6.1
+djangorestframework>=3.15,<4
+djangorestframework-simplejwt>=5.3,<6
+django-environ>=0.11
+django-cors-headers>=4.3
+whitenoise>=6.7
+gunicorn>=22.0
+# MariaDB/MySQL driver. Needs the MariaDB client headers (see README).
+mysqlclient>=2.2

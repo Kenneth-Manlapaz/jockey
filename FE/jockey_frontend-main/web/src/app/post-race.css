@@ -1,0 +1,78 @@
+.post-race-page{width:min(100%,460px);max-width:460px;min-height:calc(100svh - 70px);margin:0 auto;padding:14px 16px calc(94px + env(safe-area-inset-bottom));background:var(--paper);color:#202923}
+.post-race-page>.app-back-link{margin-bottom:11px}
+.post-race-hero{position:relative;margin:0 -16px;padding:16px 20px 20px;background:var(--brand);color:#fff}
+.post-race-kicker{display:flex;align-items:center;gap:6px;color:#C6A15B;font-size:8px;font-weight:800;letter-spacing:.12em}
+.post-race-kicker span{margin-left:auto;padding:5px 8px;border-radius:99px;background:#ffffff18;color:#C6A15B;font-size:6px}
+.post-race-hero>p{margin:17px 0 5px;color:#c5d2cb;font-size:7px;letter-spacing:.12em}
+.post-race-hero h1{margin:0;font:28px/1.1 'Libre Caslon Display',Georgia,serif}
+.post-race-venue{display:flex;align-items:center;gap:6px;margin-top:9px;color:#d6ded9;font-size:8px}.post-race-venue i{width:3px;height:3px;border-radius:50%;background:#C6A15B}
+.post-race-winner{position:relative;margin:-1px 0 16px;overflow:hidden;border:1px solid #e7e1d5;border-radius:0 0 15px 15px;background:white;box-shadow:0 7px 19px #1e30241a}
+.post-race-winner-image{min-height:181px;display:flex;flex-direction:column;justify-content:flex-end;gap:5px;padding:15px;background-position:center 38%;background-size:cover;color:white}
+.post-race-winner-image>span{display:flex;align-items:center;gap:5px;color:#C6A15B;font-size:7px;font-weight:800;letter-spacing:.14em}
+.post-race-winner-image>strong{font:25px/1.08 'Libre Caslon Display',Georgia,serif}
+.post-race-winner-image>small{color:#e1e7e2;font-size:8px}
+.post-race-winner-links{display:grid;grid-template-columns:1fr 1fr;padding:8px;gap:7px}
+.post-race-winner-links>a,.jockey-profile-actions>a{min-height:36px;display:flex;align-items:center;justify-content:space-between;gap:5px;padding:0 10px;border:1px solid #dcded5;border-radius:9px;color:var(--brand);font-size:8px;font-weight:700}
+.post-race-winner-links>a:first-child{background:var(--brand);border-color:var(--brand);color:#fff}
+.post-race-winner-links>span{padding:10px;color:#818880;font-size:7px}
+.post-race-section{margin-top:17px}
+.post-race-section-title{display:flex;align-items:flex-end;justify-content:space-between;margin:0 2px 9px}
+.post-race-section-title>div>span,.post-race-note>span{color:#C6A15B;font-size:6px;font-weight:800;letter-spacing:.16em}
+.post-race-section-title h2{margin:3px 0 0;font:18px 'Libre Caslon Display',Georgia,serif}
+.post-race-section-title>small{color:#777f76;font-size:8px}
+.post-race-placings{overflow:hidden;border:1px solid #e6e1d6;border-radius:12px;background:#fff}
+.post-race-place{min-height:53px;display:flex;align-items:center;gap:9px;padding:7px 10px;border-bottom:1px solid #eeeae2;color:#27322c;text-decoration:none}
+.post-race-place:last-child{border-bottom:0}
+.post-race-place-number{width:28px;height:28px;display:grid;place-items:center;border-radius:8px;background:#e8e9e4;color:#354139;font-size:11px;font-weight:800}
+.post-race-place.first .post-race-place-number{background:#C6A15B;color:#173b2e}
+.post-race-place>span:nth-child(2){min-width:0;flex:1;display:grid;gap:3px}
+.post-race-place strong{font-size:9px}.post-race-place small{color:#828981;font-size:7px}.post-race-place>svg{color:#C6A15B}
+.post-race-note{margin-top:14px;padding:12px;border:1px solid #e9e3d7;border-radius:11px;background:#fff}
+.post-race-note p{margin:6px 0;color:#4d574f;font-size:8px;line-height:1.5}.post-race-note>small{color:#81877f;font-size:7px}
+.post-race-all-results{min-height:40px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:13px;border-radius:9px;background:var(--brand);color:#fff;font-size:9px;font-weight:700;text-decoration:none}
+.jockey-profile-hero{display:grid;justify-items:center;margin:-14px -16px 0;padding:27px 18px 32px;background:var(--brand);color:#fff;text-align:center}
+.jockey-avatar{width:67px;height:67px;display:grid;place-items:center;border:3px solid #C6A15B;border-radius:50%;background:#f1e6c7;color:var(--brand);font:22px 'Libre Caslon Display',Georgia,serif}
+.jockey-profile-hero>small{margin-top:12px;color:#C6A15B;font-size:6px;font-weight:800;letter-spacing:.17em}
+.jockey-profile-hero h1{margin:5px 0;font:25px 'Libre Caslon Display',Georgia,serif}.jockey-profile-hero p{margin:0;color:#d3ddd6;font-size:8px}
+.jockey-profile-stats{position:relative;display:grid;grid-template-columns:repeat(3,1fr);margin:-17px 0 14px;overflow:hidden;border:1px solid #e9e5dc;border-radius:12px;background:#fff;box-shadow:0 5px 14px #1b2c2010}
+.jockey-profile-stats>div{min-height:63px;display:grid;align-content:center;justify-items:center;gap:4px;border-right:1px solid #eeeae2}.jockey-profile-stats>div:last-child{border:0}
+.jockey-profile-stats strong{color:var(--brand);font:20px 'Libre Caslon Display',Georgia,serif}.jockey-profile-stats small{color:#899087;font-size:6px;font-weight:700;letter-spacing:.08em;text-align:center}
+.jockey-profile-feature{display:flex;align-items:center;gap:10px;padding:12px;border-radius:11px;background:#efe6ca}
+.jockey-profile-feature>span,.jockey-stats-card>span{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:#C6A15B;color:var(--brand)}
+.jockey-profile-feature>div,.jockey-stats-card>div{display:grid;gap:4px}.jockey-profile-feature small,.jockey-stats-card small{color:#C6A15B;font-size:6px;font-weight:800;letter-spacing:.12em}.jockey-profile-feature strong,.jockey-stats-card strong{font:16px 'Libre Caslon Display',Georgia,serif}.jockey-profile-feature>div>small:last-child,.jockey-stats-card p{margin:0;color:#737b72;font-size:7px}
+.jockey-race-details{padding:12px;border:1px solid #e6e1d6;border-radius:11px;background:#fff}
+.jockey-detail-line{display:flex;align-items:center;gap:9px;padding:10px 1px;border-top:1px solid #efede7;color:var(--brand)}
+.jockey-detail-line>span{display:grid;gap:3px}.jockey-detail-line strong{color:#27322c;font-size:8px}.jockey-detail-line small{color:#858c83;font-size:7px}
+.jockey-profile-actions{display:grid;gap:7px;margin-top:13px}.jockey-profile-actions>a:first-child{background:var(--brand);color:#fff}
+.jockey-stats-top{height:39px;display:grid;grid-template-columns:35px 1fr 35px;align-items:center;justify-items:center;margin:-14px -16px 0;padding:0 13px;background:#faf8f2}
+.jockey-stats-top>a{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:white;color:#27322c}.jockey-stats-top>strong{font-size:9px}
+.jockey-stats-identity{display:flex;align-items:center;gap:11px;margin:0 -16px;padding:15px 17px 20px;background:var(--brand);color:white}.jockey-stats-identity .jockey-avatar{width:50px;height:50px;font-size:18px}
+.jockey-stats-identity>div>small{color:#C6A15B;font-size:6px;font-weight:800;letter-spacing:.12em}.jockey-stats-identity h1{margin:4px 0;font:20px 'Libre Caslon Display',Georgia,serif}.jockey-stats-identity p{margin:0;color:#d3ddd6;font-size:7px}
+.jockey-statistics-page .jockey-profile-stats{margin-top:-12px}
+.jockey-stats-card{display:flex;align-items:center;gap:9px;padding:11px;border:1px solid #e9e3d7;border-radius:11px;background:#fff}.jockey-stats-card>div{flex:1}.jockey-stats-card>b{color:var(--brand);font:21px 'Libre Caslon Display',Georgia,serif}
+.jockey-stats-section{margin-top:17px;padding:12px;border:1px solid #e8e3d9;border-radius:11px;background:white}.jockey-stats-section h2{margin:0 0 8px;font:17px 'Libre Caslon Display',Georgia,serif}
+.jockey-performance-row{min-height:34px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #efede7;color:#4b554d;font-size:7px}.jockey-performance-row span{display:flex;align-items:center;gap:5px}.jockey-performance-row strong{color:var(--brand)}
+.jockey-stats-disclaimer{margin:12px 3px;color:#858b83;font-size:7px;line-height:1.5}
+@media(max-width:760px){.post-race-page{width:100%;max-width:none;padding-top:calc(10px + env(safe-area-inset-top))}.post-race-hero{padding-top:16px}.jockey-profile-hero{padding-top:calc(27px + env(safe-area-inset-top))}}
+.app-result-bet-notes{display:grid;gap:5px;margin:0 10px 8px;padding:10px;border:1px solid #e8d9ac;border-radius:10px;background:#fbf2d0;color:#433412}.app-result-bet-notes p{margin:0;font-size:11px;font-weight:600;line-height:1.45}.post-race-page>.app-result-bet-notes{margin:0 0 16px;padding:14px}.post-race-page>.app-result-bet-notes p{font-size:13px}
+.post-race-page{width:min(100%,760px);max-width:760px;padding:18px 24px calc(96px + env(safe-area-inset-bottom));}
+.post-race-page>.app-back-link{font-size:14px;margin-bottom:14px}
+.post-race-hero{margin:0 -24px;padding:22px 28px 26px}
+.post-race-kicker{font-size:11px}.post-race-kicker span{font-size:9px}
+.post-race-hero>p{font-size:11px;margin-top:20px}.post-race-hero h1{font-size:38px}.post-race-venue{font-size:13px}
+.post-race-winner-image{min-height:250px;padding:20px}.post-race-winner-image>span{font-size:10px}.post-race-winner-image>strong{font-size:34px}.post-race-winner-image>small{font-size:12px}
+.post-race-winner-links{padding:10px;gap:9px}.post-race-winner-links>a{min-height:48px;padding:0 14px;border-radius:12px;font-size:13px}.post-race-winner-links>span{font-size:12px}
+.post-race-section{margin-top:22px}.post-race-section-title{margin-bottom:12px}.post-race-section-title>div>span,.post-race-note>span,.post-race-time>span{font-size:10px}.post-race-section-title h2{font-size:25px}.post-race-section-title>small{font-size:12px}
+.post-race-place{min-height:64px;gap:12px;padding:9px 13px}.post-race-place-number{width:36px;height:36px;font-size:15px}.post-race-place strong{font-size:14px}.post-race-place small{font-size:11px}
+.post-race-time{display:grid;justify-items:center;gap:4px;margin-top:18px;padding:16px;border-radius:14px;background:white;text-align:center}.post-race-time>span{color:#8a9188;font-weight:700;letter-spacing:.14em}.post-race-time>strong{color:var(--brand);font:32px 'Libre Caslon Display',Georgia,serif}.post-race-time>small{color:#747d73;font-size:12px}
+.post-race-dividend{min-height:48px;display:grid;grid-template-columns:1fr 1fr auto;align-items:center;gap:12px;padding:9px 13px;border-bottom:1px solid #eeeae2;font-size:13px}.post-race-dividend:last-child{border:0}.post-race-dividend span{color:#687268}.post-race-dividend b{color:var(--brand)}
+.post-race-note{margin-top:18px;padding:16px;border-radius:14px}.post-race-note p{font-size:13px;line-height:1.6}.post-race-note>small{font-size:11px}.post-race-all-results{min-height:48px;margin-top:16px;font-size:14px;border-radius:12px}
+@media(max-width:760px){.post-race-page{width:100%;max-width:none;padding:calc(10px + env(safe-area-inset-top)) 16px calc(88px + env(safe-area-inset-bottom))}.post-race-hero{margin:0 -16px;padding:18px 20px 22px}.post-race-hero h1{font-size:32px}.post-race-winner-image{min-height:220px}.post-race-section-title h2{font-size:22px}}
+.post-race-hero{text-align:center;padding-bottom:58px}.post-race-kicker{justify-content:center}.post-race-kicker span{position:absolute;right:24px}.post-race-hero>p{margin-top:19px}.post-race-venue{justify-content:center}
+.post-race-podium{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;min-height:174px;margin:-42px 0 18px;padding:0 10px;isolation:isolate}
+.post-race-podium-slot{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center}.post-race-podium-slot.champion{padding-bottom:0}.post-race-podium-entry{width:100%;min-height:118px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;color:#28332c;text-decoration:none}.post-race-podium-badge{width:58px;height:58px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;box-shadow:0 3px 10px #10231b24;color:#fff;font-size:22px;font-weight:800}.post-race-podium-badge.champion{width:72px;height:72px;border:3px solid #C6A15B;font-size:28px}.post-race-podium-entry strong{max-width:100%;font:16px/1.05 'Libre Caslon Display',Georgia,serif}.post-race-podium-entry small{color:#778077;font-size:11px}.post-race-podium-trophy{margin-bottom:2px;color:#C6A15B}.post-race-pedestal{width:100%;height:25px;margin-top:7px;border-radius:8px 8px 0 0;background:#d9ddd9}.post-race-pedestal.place-1{height:43px;background:#C6A15B}.post-race-pedestal.place-3{height:31px;background:#bba18a}.post-race-podium-slot.empty{min-height:130px}
+.post-race-time{display:grid;justify-items:center;gap:4px;margin:16px 0;padding:17px;border-radius:15px;background:#fff;text-align:center}.post-race-time>span{color:#848c83;font-size:10px;font-weight:700;letter-spacing:.14em}.post-race-time>strong{color:var(--brand);font:32px 'Libre Caslon Display',Georgia,serif}.post-race-time>small{color:#727a72;font-size:12px}
+.post-race-dividends .post-race-section-title{margin-bottom:9px}.post-race-dividend{min-height:47px;display:grid;grid-template-columns:1fr 1fr auto;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid #eeeae2;font-size:13px}.post-race-dividend:last-child{border-bottom:0}.post-race-dividend span{color:#626d64}.post-race-dividend b{color:var(--brand)}
+.post-race-profile-links{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.post-race-profile-links>a,.post-race-profile-links>span{min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 14px;border:1px solid #cbd2cd;border-radius:13px;color:var(--brand);font-size:14px;font-weight:700;text-decoration:none}.post-race-profile-links>a:first-child{background:#fff}
+@media(max-width:760px){.post-race-hero{padding-bottom:58px}.post-race-podium{min-height:160px;padding:0 2px}.post-race-podium-entry{min-height:108px}.post-race-podium-badge{width:52px;height:52px;font-size:20px}.post-race-podium-badge.champion{width:66px;height:66px;font-size:26px}.post-race-podium-entry strong{font-size:14px}.post-race-podium-entry small{font-size:10px}.post-race-profile-links>a,.post-race-profile-links>span{font-size:12px;padding:0 10px}}
+.post-race-podium-badge{position:relative;overflow:hidden;background:#e9e4d6}.post-race-podium-badge img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.post-race-podium-badge b{position:absolute;bottom:0;left:50%;display:grid;place-items:center;width:24px;height:24px;transform:translateX(-50%);border:1px solid #fff;border-radius:50%;background:var(--brand);color:#fff;font-size:12px}.post-race-podium-badge.champion b{width:28px;height:28px;background:#C6A15B;color:var(--brand);font-size:14px}.post-race-photo-note{margin:-10px 0 14px;color:#737c73;text-align:center;font-size:11px;line-height:1.4}

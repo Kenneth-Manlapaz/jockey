@@ -1,0 +1,231 @@
+Next.js and Django API authentication guide
+============================================
+
+This guide describes how a Next.js browser frontend should use the Django API in
+this repository. The examples assume Next.js runs at http://localhost:3000 and
+Django runs at http://localhost:8000. Use the exact host consistently: localhost
+and 127.0.0.1 are different cookie hosts.
+
+Current backend behavior
+------------------------
+
+* GET /api/v1/auth/csrf/ returns a csrfToken and sets the CSRF cookie.
+* POST /api/v1/auth/login/ checks username/email and password. It returns a short
+  lived JWT in `access` and sets the refresh JWT in an HttpOnly cookie.
+* POST /api/v1/auth/register/ works similarly and also requires accept_terms.
+* Protected data requests use `Authorization: Bearer <access>`.
+* POST /api/v1/auth/token/refresh/ reads the refresh cookie, rotates it, and
+  returns a new access JWT. The previous refresh token is blacklisted.
+* POST /api/v1/auth/logout/ blacklists the refresh token and clears its cookie.
+* Access tokens last 5 minutes. Refresh tokens last 7 days.
+* Login, registration, refresh, and logout require the CSRF token in the
+  `X-CSRFToken` header. Ordinary GET requests authenticated by the Bearer header
+  do not need a CSRF header.
+* Horse profiles require authentication: GET /api/v1/horses/.
+
+Local frontend configuration
+----------------------------
+
+In the Next.js project, create `.env.local`:
+
+    NEXT_PUBLIC_API_BASE_URL=http://localhost:8000/api/v1
+
+Restart `npm run dev` after changing `.env.local`. The Django development
+settings already allow the frontend origin http://localhost:3000. If you use a
+different frontend origin, add it to Django's CORS_ALLOWED_ORIGINS. The backend
+also uses those origins as CSRF_TRUSTED_ORIGINS.
+
+Browser requests that use cookies must set `credentials: "include"`. The local
+frontend and backend should use the same hostname (the provided Django CORS
+default allows the frontend origin http://localhost:3000). Their ports may
+differ. If you use 127.0.0.1 instead, configure CORS_ALLOWED_ORIGINS for that
+frontend origin and use 127.0.0.1 for both servers.
+
+Authentication helper
+---------------------
+
+Put browser authentication code in a client-side module such as
+`src/lib/api-auth.ts`. Do not call this module from a Server Component. The
+access JWT is kept in module memory; it is not written to localStorage,
+sessionStorage, a URL, or application logs. The refresh JWT is HttpOnly and is
+managed by the browser cookie jar, so JavaScript must never try to read it.
+
+Example TypeScript outline:
+
+    const API = process.env.NEXT_PUBLIC_API_BASE_URL!;
+
+    let accessToken: string | null = null;
+    let csrfToken: string | null = null;
+    let refreshInFlight: Promise<string | null> | null = null;
+
+    async function getCsrfToken(): Promise<string> {
+      const response = await fetch(`${API}/auth/csrf/`, {
+        credentials: "include",
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error("Could not get CSRF token");
+      const data = await response.json();
+      csrfToken = data.csrfToken;
+      return csrfToken!;
+    }
+
+    async function csrfPost(path: string, body?: unknown): Promise<Response> {
+      const csrf = await getCsrfToken();
+      return fetch(`${API}${path}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrf,
+        },
+        body: body === undefined ? undefined : JSON.stringify(body),
+      });
+    }
+
+    export async function login(email: string, password: string) {
+      const response = await csrfPost("/auth/login/", {
+        username: email,
+        password,
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail ?? "Login failed");
+      accessToken = data.access;
+    }
+
+    export async function refreshAccessToken(): Promise<string | null> {
+      if (refreshInFlight) return refreshInFlight;
+      refreshInFlight = (async () => {
+        const response = await csrfPost("/auth/token/refresh/");
+        if (!response.ok) {
+          accessToken = null;
+          return null;
+        }
+        const data = await response.json();
+        accessToken = data.access;
+        return accessToken;
+      })();
+      try {
+        return await refreshInFlight;
+      } finally {
+        refreshInFlight = null;
+      }
+    }
+
+    export async function apiFetch(path: string, init: RequestInit = {}) {
+      if (!accessToken && !(await refreshAccessToken())) {
+        throw new Error("Please log in");
+      }
+
+      const send = () => {
+        const headers = new Headers(init.headers);
+        headers.set("Authorization", `Bearer ${accessToken}`);
+        return fetch(`${API}${path}`, {
+          ...init,
+          headers,
+          credentials: "include",
+        });
+      };
+
+      let response = await send();
+      if (response.status === 401 && (await refreshAccessToken())) {
+        response = await send();
+      }
+      return response;
+    }
+
+    export async function logout() {
+      try {
+        await csrfPost("/auth/logout/");
+      } finally {
+        accessToken = null;
+      }
+    }
+
+Important: this is an outline to adapt into your app, not a complete session
+provider. In production code, also handle network errors and non-JSON error
+responses, and expose login state through a React context or another state
+manager. Do not refresh repeatedly on every kind of error: refresh and retry
+once only after a 401.
+
+What happens when a user logs in
+-------------------------------
+
+1. The login form calls `login(email, password)`.
+2. `getCsrfToken()` calls GET /auth/csrf/ with credentials enabled. The browser
+   saves the CSRF cookie; the JSON response provides the masked value for the
+   X-CSRFToken header.
+3. The login POST sends JSON credentials and X-CSRFToken. The response contains
+   `access`. The browser also saves the HttpOnly refresh cookie; frontend code
+   cannot read that cookie.
+4. Store `access` only in the module's memory variable. Do not include the
+   password in later requests.
+5. `apiFetch("/horses/")` sends GET /horses/ with
+   Authorization: Bearer <access>.
+6. Django validates the JWT and checks that the user is authenticated. The
+   horses view queries active horses, serializes them, and returns JSON.
+
+Example data request
+--------------------
+
+    const response = await apiFetch("/horses/?search=Copper");
+    if (!response.ok) throw new Error("Could not load horses");
+    const data = await response.json();
+
+The response is paginated and the horse list is in `data.results`.
+
+When the access token expires
+-----------------------------
+
+1. The data request returns 401.
+2. `apiFetch` calls refreshAccessToken(). It gets a fresh CSRF token, then sends
+   POST /auth/token/refresh/ with credentials included and X-CSRFToken.
+3. The browser automatically sends the HttpOnly refresh cookie. JavaScript does
+   not attach or read its value.
+4. Django validates and blacklists the old refresh JWT, writes the replacement
+   refresh JWT to the cookie, and returns a new `access` value.
+5. `apiFetch` retries the original data request once with the new access JWT.
+6. If refresh returns 401, the refresh session has expired or been revoked; clear
+   the local access token and send the user to the login screen.
+
+The `refreshInFlight` promise in the outline prevents simultaneous expired
+requests from trying to rotate the same refresh token at the same time.
+
+Logout
+------
+
+Call `logout()`. It sends POST /auth/logout/ with cookies and the CSRF header.
+Django blacklists the current refresh token and clears the cookie. The client
+clears its in-memory access token. A copied access JWT remains valid until its
+short expiry; logout revokes future refreshes.
+
+Registration
+------------
+
+Call `getCsrfToken()` and then POST /auth/register/ with the CSRF header. Required
+fields include `first_name`, `last_name`, `email`, `password`, and
+`accept_terms: true`. Optional fields include `mobile_number`. Registration
+returns an access token and sets the refresh cookie, so initialize the same
+in-memory access state as login.
+
+Troubleshooting
+---------------
+
+* 403 CSRF error: call /auth/csrf/ first, preserve cookies, and send the exact
+  returned csrfToken as X-CSRFToken on the POST.
+* CORS error: use the exact configured frontend origin, enable credentials, and
+  ensure Django's CORS_ALLOWED_ORIGINS includes it. CORS cannot use `*` with
+  credentials.
+* 401 from /horses/: make sure the Authorization header is `Bearer <access>`;
+  do not include the word Bearer inside Postman's Bearer Token input field.
+* Cookie missing: use credentials include and consistent hostnames. Cookies set
+  for 127.0.0.1 are not sent to localhost.
+* After a page reload, the in-memory access token is gone. On app startup, call
+  refreshAccessToken() once to restore a new access token using the refresh
+  cookie. If it fails, show the logged-out state.
+
+For a larger production app, a Backend-for-Frontend (BFF) can keep access tokens
+entirely on the server and expose only a secure session cookie to the browser.
+That requires adding Next.js route handlers or another server-side layer; this
+repository currently returns the access token to frontend JavaScript, so keeping
+it only in memory reduces persistence but cannot protect it from malicious
+JavaScript running in the page.

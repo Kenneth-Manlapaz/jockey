@@ -1,0 +1,14 @@
+[project]
+name = "philippine-jockey"
+version = "0.1.0"
+description = "Philippine Jockey: racing information API with demo (simulated) betting"
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+extend-exclude = ["migrations"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "DJ"]
+ignore = ["DJ001", "DJ008"]

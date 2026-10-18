@@ -1,0 +1,217 @@
+[
+  {
+    "title": "Splash",
+    "route": "/splash",
+    "image": "01-splash.png"
+  },
+  {
+    "title": "Onboarding",
+    "route": "/onboarding",
+    "image": "02-onboarding.png"
+  },
+  {
+    "title": "Welcome",
+    "route": "/welcome",
+    "image": "03-welcome.png"
+  },
+  {
+    "title": "Login",
+    "route": "/login",
+    "image": "04-login.png"
+  },
+  {
+    "title": "Sign up",
+    "route": "/signup",
+    "image": "05-sign-up.png"
+  },
+  {
+    "title": "Home dashboard",
+    "route": "/",
+    "image": "06-home-dashboard.png"
+  },
+  {
+    "title": "Dashboard",
+    "route": "/dashboard",
+    "image": "07-dashboard.png"
+  },
+  {
+    "title": "Races",
+    "route": "/races",
+    "image": "08-races.png"
+  },
+  {
+    "title": "Live",
+    "route": "/live",
+    "image": "09-live.png"
+  },
+  {
+    "title": "Results",
+    "route": "/results",
+    "image": "10-results.png"
+  },
+  {
+    "title": "Profile",
+    "route": "/profile",
+    "image": "11-profile.png"
+  },
+  {
+    "title": "Race detail",
+    "route": "/race/race-1",
+    "image": "12-race-detail.png"
+  },
+  {
+    "title": "Race entries",
+    "route": "/race/race-1/entries",
+    "image": "13-race-entries.png"
+  },
+  {
+    "title": "Race bet screen",
+    "route": "/race/race-1/bet",
+    "image": "14-race-bet-screen.png"
+  },
+  {
+    "title": "Bet selection",
+    "route": "/selection/race-1?market=WIN",
+    "image": "15-bet-selection.png"
+  },
+  {
+    "title": "Bet cart",
+    "route": "/bet-cart",
+    "image": "16-bet-cart.png"
+  },
+  {
+    "title": "Bet review",
+    "route": "/review",
+    "image": "17-bet-review.png"
+  },
+  {
+    "title": "Bet confirmation",
+    "route": "/bet-complete",
+    "image": "18-bet-confirmation.png"
+  },
+  {
+    "title": "Ticket detail",
+    "route": "/ticket/PJA-DEMO-001",
+    "image": "19-ticket-detail.png"
+  },
+  {
+    "title": "Betting history",
+    "route": "/betting-history",
+    "image": "20-betting-history.png"
+  },
+  {
+    "title": "Result detail",
+    "route": "/result/res-1",
+    "image": "21-result-detail.png"
+  },
+  {
+    "title": "Notifications",
+    "route": "/notifications",
+    "image": "22-notifications.png"
+  },
+  {
+    "title": "Favorites",
+    "route": "/favorites",
+    "image": "23-favorites.png"
+  },
+  {
+    "title": "Horse profile",
+    "route": "/horse/r1?race=race-1",
+    "image": "24-horse-profile.png"
+  },
+  {
+    "title": "Horse statistics",
+    "route": "/horse/r1/statistics?race=race-1",
+    "image": "25-horse-statistics.png"
+  },
+  {
+    "title": "Jockey profile",
+    "route": "/jockey/marco-de-leon?race=race-1",
+    "image": "26-jockey-profile.png"
+  },
+  {
+    "title": "Jockey statistics",
+    "route": "/jockey/marco-de-leon/statistics?race=race-1",
+    "image": "27-jockey-statistics.png"
+  },
+  {
+    "title": "Club profile",
+    "route": "/club/manila-turf-club",
+    "image": "28-club-profile.png"
+  },
+  {
+    "title": "Live stream",
+    "route": "/live/stream",
+    "image": "29-live-stream.png"
+  },
+  {
+    "title": "Live updates",
+    "route": "/live/updates",
+    "image": "30-live-updates.png"
+  },
+  {
+    "title": "Games",
+    "route": "/games",
+    "image": "31-games.png"
+  },
+  {
+    "title": "Game detail",
+    "route": "/games/win",
+    "image": "32-game-detail.png"
+  },
+  {
+    "title": "Racing guide",
+    "route": "/racing-guide",
+    "image": "33-racing-guide.png"
+  },
+  {
+    "title": "JockeyPH guide",
+    "route": "/jockeyph-guide",
+    "image": "34-jockeyph-guide.png"
+  },
+  {
+    "title": "Contender",
+    "route": "/contender",
+    "image": "35-contender.png"
+  },
+  {
+    "title": "Rewards",
+    "route": "/rewards",
+    "image": "36-rewards.png"
+  },
+  {
+    "title": "Settings",
+    "route": "/settings",
+    "image": "37-settings.png"
+  },
+  {
+    "title": "Edit profile",
+    "route": "/edit-profile",
+    "image": "38-edit-profile.png"
+  },
+  {
+    "title": "Withdraw demo balance",
+    "route": "/withdraw",
+    "image": "39-withdraw-demo-balance.png"
+  },
+  {
+    "title": "Totalizer",
+    "route": "/totalizer/race-3",
+    "image": "40-totalizer.png"
+  },
+  {
+    "title": "Pool detail",
+    "route": "/totalizer/pool/pool-win-r3",
+    "image": "41-pool-detail.png"
+  },
+  {
+    "title": "Dividend detail",
+    "route": "/totalizer/dividend/pool-place-r3",
+    "image": "42-dividend-detail.png"
+  },
+  {
+    "title": "Registration",
+    "route": "/register",
+    "image": "43-registration.png"
+  }
+]

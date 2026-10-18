@@ -1,0 +1,692 @@
+/* Wide-screen layout overrides. The existing mobile rules remain unchanged. */
+@media (min-width: 761px) and (max-width: 899px) {
+  .app-page,
+  .schedule-page,
+  .race-profile-page,
+  .race-entries-page,
+  .club-profile-page,
+  .horse-profile-page,
+  .games-page,
+  .profile-page,
+  .settings-page,
+  .live-center-page,
+  .live-stream-page,
+  .live-updates-page,
+  .post-race-page {
+    width: min(calc(100% - 48px), 760px);
+    max-width: 760px;
+  }
+
+  .app-card-list { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+  .games-guide-list { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-right: 20px; margin-left: 20px; }
+  .schedule-races { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .schedule-section-heading { grid-column: 1 / -1; }
+  .race-entry-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .race-profile-hero { min-height: 390px; }
+  .race-profile-content,.club-profile-body,.horse-profile-content { max-width: 720px; margin: 0 auto; }
+  .post-race-page { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .post-race-page > .app-back-link,.post-race-hero,.post-race-winner,.post-race-all-results { grid-column: 1 / -1; }
+}
+
+@media (min-width: 900px) {
+  .app-page {
+    width: min(calc(100% - 64px), 1120px);
+    padding-top: 38px;
+  }
+
+  .app-card-list {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
+    gap: 14px;
+  }
+
+  .app-page-heading h1 {
+    font-size: clamp(48px, 5vw, 68px);
+  }
+
+  .schedule-page,
+  .race-profile-page,
+  .race-entries-page,
+  .club-profile-page,
+  .horse-profile-page {
+    width: min(calc(100% - 64px), 1120px);
+    max-width: 1120px;
+    padding-bottom: 64px;
+  }
+
+  .schedule-date-row,
+  .schedule-filter-row {
+    justify-content: center;
+  }
+
+  .schedule-date-row {
+    gap: 10px;
+    padding: 10px 24px 0;
+  }
+
+  .schedule-date-row > button {
+    flex: 0 1 120px;
+    min-height: 62px;
+  }
+
+  .schedule-filter-row {
+    gap: 10px;
+    padding: 13px 24px;
+  }
+
+  .schedule-races {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 24px;
+  }
+
+  .schedule-section-heading {
+    grid-column: 1 / -1;
+    padding: 20px 0 8px;
+  }
+
+  .schedule-race-card {
+    grid-template-columns: 52px minmax(0, 1fr) 112px;
+    grid-template-rows: 1fr 20px 30px;
+    min-height: 118px;
+    margin: 0;
+    padding: 13px;
+    border-radius: 16px;
+  }
+
+  .schedule-race-number {
+    width: 44px;
+    height: 66px;
+    border-radius: 10px;
+  }
+
+  .schedule-race-number small { font-size: 7px; }
+  .schedule-race-number strong { font-size: 21px; }
+  .schedule-race-main { gap: 6px; }
+  .schedule-race-main > strong { font-size: 14px; }
+  .schedule-race-main > small { font-size: 10px; }
+  .schedule-race-right { height: 66px; }
+  .schedule-status { padding: 6px 9px; font-size: 8px; }
+  .schedule-race-right time { font-size: 10px; }
+  .schedule-club-link { font-size: 9px; }
+  .schedule-place-bet { padding: 7px 12px; font-size: 9px; }
+
+  .race-profile-hero {
+    min-height: 480px;
+  }
+
+  .race-profile-intro {
+    width: min(100%, 1000px);
+    margin: 0 auto;
+    padding: 0 28px 28px;
+  }
+
+  .race-profile-intro h1 { font-size: 48px; }
+  .race-profile-intro > span { font-size: 11px; }
+  .race-profile-intro p { font-size: 13px; }
+
+  .race-profile-tabs {
+    width: min(100%, 1000px);
+    margin: 0 auto;
+    padding: 14px 20px;
+  }
+
+  .race-profile-tabs a { padding: 10px 16px; font-size: 10px; }
+
+  .race-profile-content,
+  .club-profile-body,
+  .horse-profile-content {
+    width: min(100%, 1000px);
+    margin: 0 auto;
+    padding: 22px 24px 30px;
+  }
+
+  .race-profile-stats > div { min-height: 82px; padding: 15px 18px; }
+  .race-profile-stats small,.race-profile-venue small,.race-profile-course small { font-size: 9px; }
+  .race-profile-stats strong,.race-profile-venue strong,.race-profile-course strong { font-size: 12px; }
+  .race-profile-venue { padding: 17px 12px; }
+  .race-profile-course { padding: 17px; }
+  .race-profile-course > a { font-size: 10px; }
+  .race-profile-about { padding: 22px 4px 8px; }
+  .race-profile-about h2,.club-races-title h2,.horse-profile-content > h2 { font-size: 25px; }
+  .race-profile-about p { font-size: 11px; }
+  .race-profile-purse { margin: 14px 0; padding: 16px; }
+  .race-profile-purse strong { font-size: 19px; }
+  .race-profile-entries-button,.race-profile-view-entries { min-height: 52px; font-size: 12px; }
+
+  .race-entries-top {
+    height: 68px;
+    grid-template-columns: 46px 1fr 46px;
+  }
+
+  .race-entries-top > a { width: 40px; height: 40px; }
+  .race-entries-top strong { font-size: 14px; }
+  .race-entries-summary { padding: 22px 28px 25px; }
+  .race-entries-summary > span { font-size: 10px; }
+  .race-entries-summary h1 { font-size: 34px; }
+  .race-entries-summary p { font-size: 12px; }
+  .race-entries-summary > b { top: 24px; right: 28px; font-size: 9px; }
+  .race-entries-toolbar { padding: 16px 28px; font-size: 10px; }
+
+  .race-entry-list {
+    width: min(100%, 1060px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 auto;
+    padding: 0 18px;
+  }
+
+  .race-entries-page .race-entry-card { min-height: 100px; padding: 11px 13px 9px; }
+  .race-entries-page .race-entry-main-link { grid-template-columns: 42px 54px minmax(0,1fr) 20px; gap: 11px; }
+  .race-entries-page .race-entry-number { width: 40px; height: 45px; font-size: 15px; }
+  .race-entries-page .race-entry-photo { width: 52px; height: 58px; }
+  .race-entries-page .race-entry-main { gap: 5px; }
+  .race-entries-page .race-entry-main strong { font-size: 12px; }
+  .race-entries-page .race-entry-main small { font-size: 9px; }
+  .race-entries-page .race-entry-footer { padding-left: 107px; }
+  .race-entries-page .race-entry-owner { font-size: 8px; }
+  .race-entries-page .race-entry-status { font-size: 7px; }
+
+  .bet-flow-page { width: min(calc(100% - 64px), 1120px); max-width: 1120px; }
+  .bet-flow-shell { max-width: 760px; }
+  .bet-flow-title { margin-right: -22px; margin-left: -22px; padding: 15px 22px; }
+  .bet-flow-title h1 { font-size: 34px; }
+  .bet-progress { gap: 16px; margin-bottom: 24px; }
+  .bet-progress > span { grid-template-columns: 32px 1fr; gap: 9px; font-size: 11px; }
+  .bet-progress i { width: 32px; height: 32px; font-size: 12px; }
+  .bet-ticket-card,.review-ticket { padding: 18px; }
+  .bet-flow-actions { position: static; max-width: 760px; margin: 20px auto 0; padding: 0; background: none; }
+}
+
+@media (min-width: 900px) {
+  .games-page,
+  .profile-page,
+  .settings-page,
+  .live-center-page,
+  .live-stream-page,
+  .live-updates-page,
+  .post-race-page {
+    width: min(calc(100% - 64px), 1120px);
+    max-width: 1120px;
+  }
+
+  .games-page { padding-bottom: 64px; }
+  .games-hero { min-height: 290px; padding: 0 40px 42px; }
+  .games-topbar { height: 68px; grid-template-columns: 42px 1fr 42px; }
+  .games-topbar > strong { font-size: 14px; }
+  .games-mark,.games-wallet { width: 36px; height: 36px; }
+  .games-intro { max-width: 760px; margin: 25px auto 0; }
+  .games-intro > span { font-size: 10px; }
+  .games-intro h1 { font-size: 42px; }
+  .games-intro p { font-size: 11px; }
+  .games-guide-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: -26px 28px 0; }
+  .games-guide-card { min-height: 120px; grid-template-columns: 38px minmax(0, 1fr); gap: 12px; padding: 14px; border-radius: 16px; }
+  .games-guide-number { width: 38px; height: 38px; font-size: 13px; }
+  .games-guide-copy > strong { font-size: 19px; }
+  .games-guide-copy > small { font-size: 10px; white-space:normal; }
+  .games-guide-copy > em { font-size: 9px; }
+  .games-guide-copy > b { font-size: 10px; }
+
+  .profile-page { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: start; gap: 0 24px; }
+  .account-profile-hero,.account-edit-profile { grid-column: 1 / -1; }
+  .account-profile-hero { margin: 0 -14px 16px; padding: 28px 20px 34px; }
+  .account-profile-hero .profile-avatar { width: 76px; height: 76px; font-size: 20px; }
+  .account-profile-hero > h1 { font-size: 34px; }
+  .account-profile-options { grid-column: 1; align-self: start; }
+  .account-profile-options .profile-option { min-height: 68px; padding: 12px 16px; }
+  .account-profile-options .profile-option strong { font-size: 12px; }
+  .account-profile-options .profile-option small { font-size: 10px; }
+  .profile-page > .profile-signout { grid-column: 2; align-self: start; margin: 0; min-height: 52px; font-size: 12px; }
+
+  .settings-page { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: start; gap: 0 24px; }
+  .settings-hero,.settings-toggles,.settings-signout,.settings-footer { grid-column: 1 / -1; }
+  .settings-hero { padding: 6px 4px 22px; }
+  .settings-hero > span { font-size: 10px; }
+  .settings-hero h1 { font-size: 38px; }
+  .settings-group { margin-bottom: 18px; }
+  .settings-group > h2 { margin-bottom: 8px; font-size: 9px; }
+  .settings-group > .settings-row,.settings-disclosure { min-height: 66px; padding: 12px 14px; }
+  .settings-row strong,.settings-disclosure strong { font-size: 11px; }
+  .settings-row small,.settings-disclosure small { font-size: 9px; }
+  .settings-toggles label { min-height: 58px; padding: 11px 14px; }
+  .settings-toggles strong { font-size: 11px; }
+  .settings-toggles small { font-size: 9px; }
+  .settings-signout { max-width: 420px; justify-self: center; min-height: 48px; font-size: 11px; }
+  .settings-footer { font-size: 9px; }
+
+  .live-center-page { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: start; gap: 0 22px; padding-top: 0; }
+  .live-center-hero,.live-preview,.live-center-status,.live-center-disclaimer { grid-column: 1 / -1; }
+  .live-center-hero { margin: 0 -14px; padding: 24px 28px 46px; }
+  .live-center-top { height: 42px; grid-template-columns: 38px 1fr 90px; }
+  .live-center-top > strong { font-size: 13px; }
+  .live-center-heading { width: min(100%, 1000px); margin: 0 auto; padding-top: 22px; }
+  .live-center-heading > span { font-size: 9px; }
+  .live-center-heading h1 { font-size: 40px; }
+  .live-center-heading p { font-size: 11px; }
+  .live-preview { min-height: 320px; margin: -25px 0 10px; padding: 18px; }
+  .live-preview-badge { font-size: 9px; }
+  .live-preview-caption strong { font-size: 12px; }
+  .live-preview-caption small { font-size: 9px; }
+  .live-center-status { padding: 0 4px; font-size: 10px; }
+  .live-quick-actions { grid-column: 1; grid-row: span 1; gap: 12px; }
+  .live-quick-actions > a { min-height: 112px; gap: 8px; border-radius: 15px; }
+  .live-quick-actions strong { font-size: 11px; }
+  .live-quick-actions small { font-size: 9px; }
+  .live-games-section { grid-column: 2; grid-row: span 2; margin-top: 0; }
+  .live-games-section h2 { font-size: 24px; }
+  .live-games-section > div:first-child > a { font-size: 10px; }
+  .live-games-grid { grid-template-columns: 1fr; gap: 9px; }
+  .live-games-grid > a { min-height: 54px; gap: 9px; padding: 9px; border-radius: 11px; }
+  .live-games-grid > a > span { width: 27px; height: 27px; border-radius: 7px; font-size: 10px; }
+  .live-games-grid > a > strong { font-size: 10px; }
+  .live-center-disclaimer { margin-top: 14px; font-size: 9px; }
+
+  .live-stream-page { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(300px, .8fr); align-content: start; gap: 0 22px; padding-bottom: 64px; }
+  .live-stream-top { grid-column: 1 / -1; height: 64px; grid-template-columns: 44px 1fr 44px; padding: 0 18px; }
+  .live-stream-top > a { width: 38px; height: 38px; }
+  .live-stream-top > strong { font-size: 13px; }
+  .live-stream-video { grid-column: 1; grid-row: 2 / span 3; align-self: start; border-radius: 16px; }
+  .live-stream-details { grid-column: 2; grid-row: 2; padding: 8px 0 14px; }
+  .live-stream-details h1 { font-size: 30px; }
+  .live-stream-details p { font-size: 11px; }
+  .live-stream-details > a { min-height: 46px; font-size: 10px; }
+  .live-stream-note { grid-column: 2; grid-row: 3; margin: 0; font-size: 10px; }
+  .live-stream-actions { grid-column: 2; grid-row: 4; align-self: start; padding: 16px 0; }
+  .live-stream-actions > a { min-height: 42px; font-size: 9px; }
+
+  .live-updates-page { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: start; gap: 0 22px; padding-bottom: 64px; }
+  .live-updates-top,.live-updates-title,.live-update-facts,.live-updates-refresh,.live-updates-links { grid-column: 1 / -1; }
+  .live-updates-top { height: 64px; grid-template-columns: 44px 1fr 44px; }
+  .live-updates-top > a { width: 38px; height: 38px; }
+  .live-updates-top > strong { font-size: 13px; }
+  .live-updates-title { margin: 0 -14px; padding: 22px 28px 26px; }
+  .live-updates-title > span { font-size: 9px; }
+  .live-updates-title h1 { font-size: 34px; }
+  .live-updates-title > b { top: 27px; right: 28px; font-size: 9px; }
+  .live-update-facts { gap: 12px; margin: 15px 0; }
+  .live-update-facts > div { min-height: 68px; padding: 12px; }
+  .live-update-facts small { font-size: 8px; }
+  .live-update-facts strong { font-size: 11px; }
+  .live-positions,.live-entry-monitor { margin-top: 8px; }
+  .live-positions h2,.live-entry-monitor h2 { margin-bottom: 10px; font-size: 23px; }
+  .live-waiting-card { min-height: 160px; padding: 20px; }
+  .live-waiting-card > strong { font-size: 17px; }
+  .live-waiting-card > p { max-width: 360px; font-size: 10px; }
+  .live-entry-monitor article { min-height: 54px; gap: 10px; padding: 8px 12px; }
+  .live-entry-monitor article > .app-race-number { width: 32px; height: 32px; font-size: 11px; }
+  .live-entry-monitor article strong { font-size: 10px; }
+  .live-entry-monitor article small { font-size: 8px; }
+  .live-entry-monitor article > b { font-size: 8px; }
+  .live-updates-refresh,.live-updates-links { margin-top: 15px; font-size: 9px; }
+
+  .post-race-page { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: start; gap: 16px 20px; padding-top: 28px; }
+  .post-race-page > .app-back-link,.post-race-hero { grid-column: 1 / -1; }
+  .post-race-hero { margin: 0 -16px 18px; padding: 28px 30px; }
+  .post-race-kicker { font-size: 10px; }
+  .post-race-hero > p { font-size: 9px; }
+  .post-race-hero h1 { font-size: 44px; }
+  .post-race-venue { font-size: 11px; }
+  .post-race-winner { grid-column: 1 / -1; display: grid; grid-template-columns: 1.4fr 1fr; border-radius: 16px; }
+  .post-race-winner-image { min-height: 300px; border-radius: 15px 0 0 15px; }
+  .post-race-winner-links { align-content: center; }
+  .post-race-section { align-self: start; }
+  .post-race-note { align-self: start; }
+  .post-race-all-results { grid-column: 1 / -1; }
+  .jockey-profile-hero,.jockey-stats-top,.jockey-stats-identity { grid-column: 1 / -1; }
+  .jockey-profile-hero { padding: 36px; }
+  .jockey-profile-hero > h1 { font-size: 42px; }
+  .jockey-profile-stats { grid-column: 1 / -1; }
+  .jockey-profile-feature,.jockey-race-details,.jockey-stats-card,.jockey-stats-section,.jockey-stats-disclaimer { align-self: start; }
+  .jockey-profile-actions { grid-column: 1 / -1; }
+  .horse-profile-page { width: min(calc(100% - 64px), 1120px); max-width: 1120px; }
+  .horse-profile-hero { min-height: 480px; }
+  .horse-profile-content { max-width: 900px; }
+  .horse-stats-page { max-width: 920px; }
+}
+
+@media (min-width: 761px) {
+  /* Desktop navigation replaces the phone-only bottom tabs and safe-area spacing. */
+  .web-shell > .mobile-tab-bar { display: none !important; }
+  .web-nav { position: sticky; top: 0; z-index: 40; }
+  .web-nav-links { align-items: center; flex-wrap: nowrap; white-space: nowrap; }
+
+  .web-nav {
+    border-bottom: 1px solid #e8e2d6;
+    background: #fffdf8;
+    color: #24302b;
+  }
+
+  .web-nav-links { color: #64716a; }
+  .web-nav-links a:hover { color: #C6A15B; }
+  .brand-mark { color: var(--accent-icon); }
+  .brand-lockup small { color: #C6A15B; }
+  .brand-lockup strong { color: #123c32; }
+
+  .live-center-hero {
+    margin: 16px 0 38px;
+    padding: 22px 28px 24px;
+    border: 1px solid #e8e2d6;
+    border-radius: 20px;
+    background: #fffdf8;
+    color: #24302b;
+    box-shadow: 0 8px 24px #23382b0a;
+  }
+
+  .live-center-top > a {
+    border-color: #eadfc4;
+    background: #faf4e7;
+    color: #C6A15B;
+  }
+
+  .live-center-top > strong { color: #24302b; }
+  .live-center-top > span { color: #68736d; }
+  .live-center-heading { padding-top: 16px; }
+  .live-center-heading > span { color: #C6A15B; }
+  .live-center-heading h1 { color: #123c32; }
+  .live-center-heading p { color: #70776f; }
+  .live-preview { margin-top: -22px; }
+}
+
+@media (max-width: 760px) {
+  .schedule-header { height: 54px; padding: 0 14px; }
+  .schedule-header h1 { font-size: 16px; }
+  .schedule-logo { width: 34px; height: 34px; }
+  .schedule-search { width: 36px; height: 36px; }
+  .schedule-club-selected { min-height: 48px; padding: 8px 14px; }
+  .schedule-club-selected button { font-size: 10px; }
+  .schedule-club-selected > span { font-size: 8px; }
+  .schedule-club-selected > strong { font-size: 12px; }
+  .schedule-date-row { min-height: 64px; }
+  .schedule-date small { font-size: 10px; }
+  .schedule-date span { font-size: 10px; }
+  .schedule-date-row .schedule-date > em { font-size: 7px; }
+  .schedule-filter-row { padding-top: 10px; padding-bottom: 10px; }
+  .schedule-filter-row button { min-height: 30px; padding: 0 13px; font-size: 9px; }
+  .schedule-races { padding-right: 12px; padding-left: 12px; }
+  .schedule-section-heading { padding-top: 11px; padding-bottom: 9px; }
+  .schedule-section-heading strong { font-size: 11px; }
+  .schedule-section-heading small { font-size: 9px; }
+
+  .schedule-race-card {
+    grid-template-columns: 58px minmax(0, 1fr) 76px;
+    grid-template-rows: minmax(45px, 1fr) 36px;
+    min-height: 110px;
+    gap: 3px 7px;
+    margin-bottom: 8px;
+    padding: 9px;
+    border-radius: 18px;
+  }
+
+  .schedule-race-number { grid-row: 1 / 3; width: 52px; height: auto; min-height: 90px; border-radius: 12px; }
+  .schedule-race-number small { font-size: 8px; }
+  .schedule-race-number strong { font-size: 28px; }
+  .schedule-race-main { align-self: center; gap: 5px; }
+  .schedule-race-main > strong { font-size: 17px; }
+  .schedule-race-main > small { font-size: 10px; }
+  .schedule-race-right { grid-row: 1 / 3; height: auto; min-height: 90px; padding: 2px 0; }
+  .schedule-status { padding: 7px 8px; font-size: 8px; }
+  .schedule-race-right time { font-size: 10px; }
+
+  .schedule-race-actions {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .schedule-race-actions .schedule-club-link,
+  .schedule-race-actions .schedule-place-bet {
+    grid-column: auto;
+    grid-row: auto;
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+    min-height: 34px;
+    padding-right: 6px;
+    padding-left: 6px;
+    border-radius: 999px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .schedule-race-actions .schedule-club-link {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--brand);
+    background: white;
+    color: var(--brand);
+  }
+}
+
+@media (min-width: 761px) {
+  .web-main,
+  .app-page,
+  .schedule-page,
+  .race-profile-page,
+  .race-entries-page,
+  .club-profile-page,
+  .horse-profile-page,
+  .games-page,
+  .profile-page,
+  .settings-page,
+  .live-center-page,
+  .live-stream-page,
+  .live-updates-page,
+  .post-race-page,
+  .bet-flow-page {
+    padding-bottom: 64px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .web-nav { padding-right: max(32px, calc((100vw - 1240px) / 2)); padding-left: max(32px, calc((100vw - 1240px) / 2)); }
+  .web-nav-links { gap: clamp(18px, 1.8vw, 28px); }
+  .web-main { max-width: 1240px; padding-right: 32px; padding-left: 32px; }
+}
+
+/* Race schedule: roomy desktop cards, with phone styles left intact. */
+@media (min-width: 761px) {
+  .schedule-page {
+    width: min(calc(100% - 72px), 1000px);
+    max-width: 1000px;
+    padding-top: 34px;
+  }
+
+  .schedule-header {
+    min-height: 78px;
+    grid-template-columns: minmax(0, 1fr) 48px;
+    padding: 16px 24px;
+    border-radius: 18px;
+    background: #fffdf8;
+  }
+
+  .schedule-header h1 { font-size: 32px; }
+  .schedule-search { width: 44px; height: 44px; }
+
+  .schedule-club-selected {
+    min-height: 76px;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 4px 16px;
+    margin-top: 18px;
+    padding: 15px 22px;
+    border-radius: 15px;
+  }
+
+  .schedule-club-selected button { grid-row: 1 / 3; font-size: 13px; }
+  .schedule-club-selected > span { font-size: 10px; }
+  .schedule-club-selected > strong { font-size: 16px; }
+
+  .schedule-date-row {
+    min-height: 94px;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 8px 16px 0;
+    border: 1px solid #e6e1d7;
+    border-radius: 15px 15px 0 0;
+  }
+
+  .schedule-date-row > button:first-child,
+  .schedule-date-row > button:last-child { flex: 0 0 44px; }
+  .schedule-date-row .schedule-date,
+  .schedule-date-row .schedule-date.selected { flex: 1 1 120px; max-width: 150px; }
+  .schedule-date small { font-size: 14px; }
+  .schedule-date span { font-size: 13px; }
+  .schedule-date-row .schedule-date > em { font-size: 10px; }
+
+  .schedule-filter-row {
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 16px 0;
+    border: 0;
+  }
+
+  .schedule-filter-row button { min-height: 38px; padding: 0 18px; font-size: 12px; }
+  .schedule-races { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 0; }
+  .schedule-section-heading { padding: 10px 0 4px; }
+  .schedule-section-heading strong { font-size: 14px; }
+  .schedule-section-heading small { font-size: 12px; }
+
+  .schedule-race-card {
+    grid-template-columns: 92px minmax(0, 1fr) 150px;
+    grid-template-rows: minmax(56px, 1fr) 48px;
+    min-height: 154px;
+    gap: 8px 18px;
+    margin: 0;
+    padding: 16px;
+    border: 1px solid #e4e1d9;
+    border-radius: 22px;
+    box-shadow: 0 3px 10px #20372d0a;
+    transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+
+  .schedule-race-card:hover { transform: translateY(-1px); border-color: #c8d8cf; box-shadow: 0 8px 22px #20372d12; }
+  .schedule-race-number { grid-column: 1; grid-row: 1 / 3; width: 78px; height: auto; min-height: 116px; border-radius: 15px; }
+  .schedule-race-number small { font-size: 10px; }
+  .schedule-race-number strong { font-size: 34px; }
+  .schedule-race-main { grid-column: 2; grid-row: 1; align-self: center; gap: 8px; }
+  .schedule-race-main > strong { font-size: 25px; }
+  .schedule-race-main > small { font-size: 15px; }
+  .schedule-race-right { grid-column: 3; grid-row: 1 / 3; height: auto; align-content: space-between; padding: 3px 0; }
+  .schedule-status { padding: 10px 13px; font-size: 11px; }
+  .schedule-race-right time { font-size: 14px; }
+  .schedule-race-actions { grid-column: 2; grid-row: 2; display: flex; align-items: center; gap: 8px; }
+  .schedule-club-link,
+  .schedule-place-bet { grid-column: auto; grid-row: auto; min-height: 44px; justify-self: auto; align-self: auto; padding: 0 16px; border-radius: 12px; font-size: 14px; }
+  .schedule-club-link { display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--brand); color: var(--brand); }
+  .schedule-place-bet { gap: 9px; background: var(--brand); color: white; }
+}
+
+@media (min-width: 900px) {
+  .live-center-page {
+    grid-template-columns: minmax(0, 1.35fr) minmax(320px, .85fr);
+    gap: 0 24px;
+    padding-bottom: 64px;
+  }
+
+  .live-center-hero {
+    margin: 4px 0 8px;
+    padding: 20px 28px 22px;
+    box-shadow: 0 8px 24px #23382b08;
+  }
+
+  .live-center-heading { padding-top: 12px; }
+  .live-center-heading h1 { font-size: 36px; }
+
+  .live-preview {
+    grid-column: 1;
+    grid-row: 2;
+    min-height: 370px;
+    margin: 0 0 12px;
+    border-color: #fff;
+    border-radius: 18px;
+  }
+
+  .live-center-status {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: start;
+    margin: 0;
+    padding: 2px 4px;
+  }
+
+  .live-quick-actions {
+    grid-column: 2;
+    grid-row: 2;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-self: start;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .live-quick-actions > a {
+    min-width: 0;
+    min-height: 105px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+
+  .live-quick-actions strong { font-size: 10px; }
+  .live-quick-actions small { font-size: 8px; }
+
+  .live-games-section {
+    grid-column: 2;
+    grid-row: 3;
+    align-self: start;
+    margin-top: 0;
+  }
+
+  .live-games-grid { grid-template-columns: 1fr; }
+  .live-center-disclaimer { margin-top: 18px; }
+}
+
+/* Give the race schedule real desktop scale; keep its compact phone rules intact. */
+@media (min-width: 761px) {
+  .schedule-page { padding-top: 32px; }
+  .schedule-header {
+    height: auto;
+    min-height: 88px;
+    grid-template-columns: minmax(0, 1fr) 44px;
+    gap: 18px;
+    padding: 16px 24px;
+    border: 1px solid #e8e2d6;
+    border-radius: 16px;
+    background: #fffdf8;
+    box-shadow: 0 5px 18px #23382b08;
+  }
+  .schedule-logo { display: none; }
+  .schedule-header > div { text-align: left; }
+  .schedule-header > div > span { font-size: 10px; letter-spacing: .14em; }
+  .schedule-header h1 { margin-top: 4px; color: #123c32; font: 30px/1.1 'Libre Caslon Display', Georgia, serif; }
+  .schedule-search { width: 42px; height: 42px; }
+  .schedule-search-input { width: min(calc(100% - 48px), 720px); height: 46px; margin: 14px auto 0; display: block; font-size: 14px; }
+
+  .schedule-club-picker { max-width: 960px; margin: 22px auto 0; padding: 0 12px 28px; }
+  .schedule-club-picker > .schedule-section-heading { padding: 8px 0 6px; }
+  .schedule-club-picker > .schedule-section-heading strong { color: #20372e; font-size: 17px; }
+  .schedule-club-picker > .schedule-section-heading small { padding: 6px 10px; border-radius: 99px; background: #f7f3e8; color: #747970; font-size: 10px; }
+  .schedule-club-picker > p { margin-bottom: 18px; color: #737a72; font-size: 13px; }
+  .schedule-club-list { gap: 12px; }
+  .schedule-club-card { min-height: 88px; gap: 16px; padding: 14px 16px; border-radius: 16px; box-shadow: 0 3px 12px #20372d09; transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease; }
+  .schedule-club-card:hover { transform: translateY(-1px); border-color: #c8d8cf; box-shadow: 0 8px 22px #20372d10; }
+  .schedule-club-emblem { width: 56px; height: 56px; border-radius: 14px; }
+  .schedule-club-emblem svg { width: 21px; height: 21px; }
+  .schedule-club-card > span:nth-child(2) { gap: 6px; }
+  .schedule-club-card strong { color: #24372f; font-size: 15px; }
+  .schedule-club-card small { font-size: 11px; }
+  .schedule-club-card > svg { width: 20px; height: 20px; }
+}
+
+@media (min-width: 1200px) {
+  .schedule-page { width: min(calc(100% - 96px), 1120px); }
+  .schedule-header { min-height: 96px; padding-right: 30px; padding-left: 30px; }
+  .schedule-header h1 { font-size: 34px; }
+  .schedule-club-picker { max-width: 1000px; margin-top: 26px; }
+  .schedule-club-card { min-height: 96px; padding: 16px 18px; }
+  .schedule-club-emblem { width: 60px; height: 60px; }
+  .schedule-club-card strong { font-size: 16px; }
+  .schedule-club-card small { font-size: 12px; }
+}
