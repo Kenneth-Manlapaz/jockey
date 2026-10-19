@@ -93,6 +93,21 @@ try:
         assert 'Declared entries' in rendered and 'Sample data ·' not in rendered
     with opener.open(f"http://127.0.0.1:3000/horse/{program['entries'][0]['horse']['id']}?race={race_id}", timeout=30) as page:
         assert 'Comparable form' in page.read().decode()
+    for kind in ['horses', 'jockeys', 'trainers', 'owners']:
+        with opener.open(f'http://127.0.0.1:3000/directory/{kind}', timeout=30) as page:
+            rendered = page.read().decode()
+            assert 'directory-tabs' in rendered and 'racing-profile-list' in rendered
+            assert f'aria-label="Search {kind}"' in rendered
+        if kind != 'horses':
+            status, people = send(f'/racing/directory/{kind}/', access=signed_in['access'])
+            assert status == 200 and people['results']
+            participant_id = people['results'][0]['id']
+            with opener.open(f'http://127.0.0.1:3000/people/{kind}/{participant_id}', timeout=30) as page:
+                rendered = page.read().decode()
+                assert 'participant-stats' in rendered and 'participant-connections' in rendered
+                assert 'racing-profile-list compact' in rendered
+    with opener.open('http://127.0.0.1:3000/directory/horses?search=zzzz-no-such-profile', timeout=30) as page:
+        assert 'No profiles found' in page.read().decode()
     status, published = send('/racing/results/', access=signed_in['access'])
     assert status == 200 and published['count'] > 200
     horse = Race.objects.filter(entries__isnull=False).first().entries.first().horse_id

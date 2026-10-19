@@ -1,0 +1,127 @@
+/* Shared information screens: bounded type and spacing at every viewport. */
+.web-main.racing-page:not(.learning-guide):not(.subscription-page) {
+  width: 100%;
+  max-width: 1200px;
+  padding: 24px clamp(16px, 3vw, 28px) 80px;
+  gap: 20px;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.racing-page:not(.learning-guide) > .dashboard-hero {
+  display: block !important;
+  padding: clamp(20px, 3vw, 30px);
+  border-radius: 18px;
+}
+.racing-page:not(.learning-guide) > .dashboard-hero h1 {
+  font-size: clamp(32px, 3.6vw, 46px);
+  line-height: 1.12;
+  margin: 10px 0 12px;
+  overflow-wrap: anywhere;
+  max-width: 28ch;
+}
+.racing-page:not(.learning-guide) > .dashboard-hero p {
+  font-size: 14px;
+  line-height: 1.65;
+  max-width: 72ch;
+  margin: 0;
+}
+.racing-page:not(.learning-guide) > .dashboard-hero > small {
+  display: block;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 12px;
+  max-width: 80ch;
+}
+.racing-page:not(.learning-guide) > .dashboard-hero .eyebrow { font-size: 10px; text-transform: uppercase; }
+.racing-page:not(.learning-guide) .web-card { border-radius: 14px; padding: clamp(18px, 2.3vw, 24px); }
+.racing-page:not(.learning-guide) .web-card h2 { font-size: clamp(24px, 2.2vw, 29px); line-height: 1.2; }
+.racing-page .app-back-link { margin: 0; justify-self: start; min-height: 32px; }
+.racing-page .racing-calendar-layout { grid-template-columns: minmax(310px, .85fr) minmax(0, 1.25fr); gap: 20px; }
+.racing-page .racing-calendar { top: 92px; }
+.racing-page .racing-meetings .app-page-heading h1 { font-size: clamp(30px, 3vw, 38px); }
+.racing-page .racing-meetings .app-page-heading p { font-size: 13px; }
+.racing-page .racing-day { min-height: 42px; border-radius: 9px; }
+.racing-page .racing-month-nav h3 { font-size: 16px; }
+.racing-page .racing-vitals > div { min-width: 0; overflow-wrap: anywhere; }
+
+/* Directories use one surface and compact rows, rather than individual tiles. */
+.racing-page.racing-directory-page .directory-panel { padding: 0; overflow: hidden; }
+.directory-tabs { display: flex; gap: 24px; padding: 0 22px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.directory-tabs a { display: inline-flex; align-items: center; flex: 0 0 auto; min-height: 54px; border-bottom: 2px solid transparent; padding: 0 2px; color: #67746d; font-size: 13px; font-weight: 500; }
+.directory-tabs a[aria-current="page"] { color: var(--brand); border-bottom-color: var(--accent); font-weight: 700; }
+.directory-tabs a:hover { color: var(--brand); }
+.directory-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; padding: 20px 22px; }
+.directory-search { display: flex; align-items: center; flex: 1 1 360px; gap: 8px; max-width: 620px; min-width: 0; }
+.directory-search > div { display: flex; align-items: center; min-width: 0; flex: 1; position: relative; }
+.directory-search svg { position: absolute; left: 12px; color: var(--muted); pointer-events: none; }
+.directory-search input { width: 100%; min-width: 0; height: 44px; border: 1px solid var(--line); border-radius: 9px; background: #fafaf8; padding: 0 12px 0 38px; font-size: 16px; color: var(--ink); }
+.directory-search .app-button { min-height: 44px; padding: 0 16px; border-radius: 9px; font-size: 13px; }
+.directory-clear { color: var(--brand); padding: 10px 4px; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+.directory-count { margin: 0; font-size: 12px; color: var(--muted); white-space: nowrap; }
+.directory-count strong { color: var(--brand); font-weight: 700; }
+.racing-profile-list { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 24px; margin: 0; padding: 0 22px 12px; }
+.racing-profile-list li { min-width: 0; border-top: 1px solid var(--line); }
+.racing-profile-link { display: flex; align-items: center; gap: 12px; min-height: 72px; height: 100%; padding: 12px 6px; border-radius: 8px; transition: background-color .15s; }
+.racing-profile-link:hover { background: #f3f5ef; }
+.racing-profile-initials { display: grid; place-items: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; color: var(--brand); background: #edf1e9; font-size: 11px; font-weight: 700; letter-spacing: .03em; }
+.racing-profile-name { display: grid; gap: 3px; flex: 1; min-width: 0; }
+.racing-profile-name strong { font: 600 14px/1.5 'DM Sans', Arial, sans-serif; color: var(--brand); overflow-wrap: anywhere; }
+.racing-profile-name small { font-size: 11px; line-height: 1.5; color: var(--muted); }
+.racing-profile-link > svg { flex-shrink: 0; color: #85948a; }
+.racing-profile-link:hover > svg { color: var(--brand); }
+.directory-pagination { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-top: 1px solid var(--line); padding: 16px 22px; font-size: 12px; color: var(--muted); }
+.directory-empty { padding: 30px 22px 40px; text-align: center; color: var(--muted); }
+.directory-empty p { font-size: 13px; }
+.directory-tabs a:focus-visible, .directory-search input:focus-visible, .directory-clear:focus-visible, .racing-profile-link:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+
+/* Participant pages keep the stats together and present connections as lists. */
+.participant-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.racing-page .participant-section-heading h2 { margin: 0; }
+.participant-section-heading > span { color: var(--muted); font-size: 11px; }
+.participant-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 22px 0 18px; gap: 20px; }
+.participant-stats > div { padding-left: 20px; border-left: 1px solid var(--line); min-width: 0; }
+.participant-stats > div:first-child { border: 0; padding-left: 0; }
+.participant-stats dt { color: var(--muted); font-size: 11px; margin-bottom: 8px; }
+.participant-stats dd { margin: 0; font-size: clamp(26px, 3vw, 34px); font-weight: 600; color: var(--brand); line-height: 1.1; font-variant-numeric: tabular-nums; }
+.participant-basis { border-top: 1px solid var(--line); padding-top: 12px; margin: 0; font-size: 11px; }
+.participant-connections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: start; }
+.participant-connections > section { min-width: 0; }
+.racing-profile-list.compact { grid-template-columns: 1fr; padding: 0; }
+.compact .racing-profile-link { min-height: 60px; padding: 10px 4px; }
+.compact .racing-profile-initials { width: 32px; height: 32px; border-radius: 8px; font-size: 10px; }
+.participant-more summary { padding: 12px 4px 0; color: var(--brand); font-size: 12px; font-weight: 600; cursor: pointer; }
+.participant-more[open] summary { padding-bottom: 12px; }
+.participant-more summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.participant-results .racing-table-wrap { border: 1px solid var(--line); border-radius: 10px; }
+.participant-results .racing-table { min-width: 760px; }
+.participant-results .racing-table tbody tr:last-child td { border-bottom: 0; }
+
+@media (max-width: 960px) {
+  .racing-profile-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+  .racing-profile-list.compact { grid-template-columns: 1fr; }
+  .racing-page .racing-calendar-layout { grid-template-columns: minmax(280px, .9fr) minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .web-main.racing-page:not(.learning-guide):not(.subscription-page) { padding-top: 18px; padding-bottom: calc(88px + env(safe-area-inset-bottom)); gap: 16px; }
+  .racing-page .racing-calendar-layout, .participant-connections { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .racing-page .racing-calendar { position: static; }
+  .directory-tabs { gap: 20px; padding: 0 16px; }
+  .directory-toolbar { padding: 16px; gap: 10px; }
+  .directory-search { flex-basis: 100%; }
+  .racing-profile-list { padding: 0 16px 8px; gap: 0 16px; }
+  .racing-profile-name strong { font-size: 14px; }
+  .directory-pagination { padding: 14px 16px; }
+  .participant-stats { gap: 12px; }
+  .participant-stats > div { padding-left: 12px; }
+  .participant-stats dt { font-size: 11px; line-height: 1.5; }
+}
+@media (max-width: 540px) {
+  .racing-profile-list { grid-template-columns: minmax(0, 1fr); }
+  .racing-profile-link { min-height: 64px; }
+  .directory-tabs { gap: 16px; }
+  .directory-tabs a { min-height: 48px; font-size: 12px; }
+  .participant-section-heading { gap: 6px; }
+  .participant-section-heading > span { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .racing-profile-link { transition: none; } }
