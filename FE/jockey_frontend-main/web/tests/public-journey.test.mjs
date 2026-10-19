@@ -79,7 +79,8 @@ test('membership prices and local payment integration are available', async () =
   assert.equal(Number(catalog.plans.find(p => p.code === 'monthly').price), 499);
   assert.match(await html('/subscribe'), /JOCKEY MEMBERSHIP/);
   const frame = await html('/subscription/payment-frame?checkout=11111111-1111-1111-1111-111111111111');
-  assert.match(frame, /Complete preview payment/);
+  assert.match(frame, /Pay &amp; activate membership/);
+  assert.match(frame, /All demo payments are approved/);
   assert.match(frame, /No money will be charged/);
   assert.equal((await fetch(site + '/subscription/payment-frame?checkout=invalid')).status, 400);
 });

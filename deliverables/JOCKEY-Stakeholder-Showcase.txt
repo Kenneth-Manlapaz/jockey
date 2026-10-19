@@ -1,0 +1,187 @@
+JOCKEY | STAKEHOLDER SHOWCASE
+Presentation content and speaker notes | 18 October 2026
+Audience: product, business and delivery stakeholders
+Status: Editable PowerPoint and PDF exported using Microsoft PowerPoint automation.
+
+SLIDE 01
+JOCKEY
+Racing information. Connected.
+Stakeholder showcase | October 2026
+
+Speaker notes:
+JOCKEY brings the racing calendar, programs, participant histories and published results into one membership experience. This showcase covers the implemented product, its access model and the decisions needed for a controlled launch.
+
+SLIDE 02
+Follow the racing day in one place
+
+Discover the meeting.
+Study the field.
+Review the result.
+
+Speaker notes:
+The core experience follows a racing fan's practical questions: What is scheduled? Who is running? What does the recorded form show? What happened afterward? Calendar, program, horse and participant pages connect through permanent records, so users can move between these questions without starting a new search.
+[Sources]
+RECONSTRUCTION.md: implemented calendar, programs, permanent profiles and results.
+SETUP.md: current membership access policy.
+[/Sources]
+
+SLIDE 03
+The calendar is the entry point
+
+Browse racing dates and venues.
+Move between past and upcoming meetings.
+Open the selected meeting's program with membership.
+
+Speaker notes:
+Calendar dates and meeting summaries are public. Race programs require a signed-in account with active membership. Multiple venues can appear on the same day, and empty dates remain explicit. Public discovery gives visitors a useful starting point before asking them to subscribe.
+Live walkthrough: http://127.0.0.1:3000
+[Sources]
+SETUP.md: public calendar and protected racing programs.
+RECONSTRUCTION.md: calendar navigation and meeting identity.
+[/Sources]
+
+SLIDE 04
+Each program connects the field to its history
+
+Declarations, riders, connections and weights
+Recent form and comparable performances
+Results linked back to the original program
+
+Speaker notes:
+Open a meeting, select a race and follow a horse link. The program shows race conditions and declarations, then links to the history needed to understand the field. Comparable form uses recorded venue, surface and distance. Missing information stays unavailable rather than being filled with invented timing. Result publication preserves the original program.
+[Sources]
+RECONSTRUCTION.md: program fields, recent/comparable form and program retention.
+[/Sources]
+
+SLIDE 05
+Profiles give the racing records context
+
+Horse pedigree, connections and recorded performance
+Searchable jockey, trainer and owner directories
+Historical assignments preserved with results
+
+Speaker notes:
+Profiles help users explore beyond a single race. Recorded statistics reflect finishing records, while historical participation snapshots preserve who rode, trained and owned the horse at the time. Subsequent declaration changes do not rewrite those historical connections.
+[Sources]
+RECONSTRUCTION.md: profiles, directories and result participation snapshots.
+[/Sources]
+
+SLIDE 06
+Membership offers two ways to access racing
+
+DAILY ACCESS                         MONTHLY MEMBERSHIP
+PHP 50                              PHP 499
+24 hours                            One calendar month
+
+Monthly saves PHP 1,001 compared with 30 daily passes.
+
+Speaker notes:
+Both plans unlock the same protected racing information. Daily access lasts exactly 24 hours. Monthly access ends at the same Philippine local time in the next calendar month, with shorter months clamped to their last day. Prices are editable in admin. Renewals extend access after the existing period; there is no automatic renewal. The savings comparison is 30 x PHP 50 minus PHP 499, not a revenue forecast.
+[Sources]
+SETUP.md: plan prices, calendar-month validity, renewal and price configuration.
+[/Sources]
+
+SLIDE 07
+The subscription journey is working end to end
+
+Choose a plan.
+Sign in or create an account.
+Complete checkout and continue to racing.
+
+Current checkout activates access without collecting money.
+
+Speaker notes:
+The intended destination and selected plan carry through authentication. Checkout opens in an embedded frame, and confirmation is validated against the signed-in account and checkout record. The current no-charge flow demonstrates activation and access expiry. A real provider and verified server-side payment confirmation remain necessary before accepting payment.
+Live walkthrough: http://127.0.0.1:3000/subscribe
+[Sources]
+SETUP.md: membership walkthrough and payment integration boundary.
+[/Sources]
+
+SLIDE 08
+A broad dataset supports a substantive walkthrough
+
+132 horses              306 races
+50 meetings             2,036 finishing records
+
+History, upcoming programs, connections and dividends
+
+Speaker notes:
+These figures describe generated records in the current workspace, not live racing coverage, customers or traction. The expanded seed provides varied horses, riders, trainers, owners, six- and eight-race programs, individual times and published event relationships. A fresh database receives 128 newly seeded horses; the workspace total includes earlier retained records. The repeatable seed supports another configured database without manually re-entering the showcase data.
+[Sources]
+SETUP.md: seed scope, current workspace counts and fresh-database distinction.
+[/Sources]
+
+SLIDE 09
+The product supports discovery and return visits
+
+Public learning guide explains the racing information.
+Favorites make selected horses easy to revisit.
+Membership keeps access status visible in the account.
+
+Speaker notes:
+These features support the intended customer journey; their impact on conversion and retention has not yet been measured. Education is public, favorites belong to the signed-in user, and the membership page explains the active access period. After a pilot, evaluate plan selection, checkout completion and repeat usage with appropriate analytics and consent.
+[Sources]
+SETUP.md: public learning guide and membership account flow.
+RECONSTRUCTION.md: per-user favorites and authorization.
+[/Sources]
+
+SLIDE 10
+Core access and account flows have been verified
+
+86 backend tests
+97 frontend and interaction tests
+7 HTTP journey checks
+
+Production build and full account-to-membership flow passed.
+
+Speaker notes:
+The 97 figure combines 82 existing frontend tests and 15 React DOM interaction tests. HTTP verification covered registration, login, checkout activation, gated APIs, subscriber server-rendered pages, favorites, refresh and logout. These are engineering checks, not proof of production availability or load capacity. Browser screenshots, physical-device QA and MariaDB deployment remain unverified.
+[Sources]
+SETUP.md: verification counts, HTTP workflow and QA limits.
+[/Sources]
+
+SLIDE 11
+Launch depends on data, payment and deployment
+
+Authorize the racing data source and publication process.
+Connect payments with verified confirmation.
+Validate the hosted environment and customer experience.
+
+Speaker notes:
+An authorized feed or managed import is needed for real schedules, declarations, results and dividends. The payment integration must validate provider confirmation, amount, currency and transaction reference before granting access. Deployment work includes the target database, HTTPS, secrets, backups and restoration, plus browser/device QA. Operator-specific event definitions require authoritative rules. The information membership workflow is separate from the existing betting and settlement implementation.
+[Sources]
+SETUP.md: deployment configuration and provider integration requirements.
+RECONSTRUCTION.md: external data dependencies, operator rules and recovery process.
+[/Sources]
+
+SLIDE 12
+Align on the controlled pilot
+
+Confirm pricing and the intended audience.
+Assign data, payment and deployment owners.
+Agree on pilot scope and success measures.
+
+Speaker notes:
+The immediate stakeholder decision is whether to proceed with a controlled pilot and who owns its external dependencies. Proposed measures include subscription conversion, checkout completion, repeat usage and timely publication of verified racing records. No targets, launch date or commercial outcomes are claimed here. Use the live platform to review the customer journey before committing to a broader release.
+
+PRESENTER WALKTHROUGH
+1. Open the homepage and select a populated racing date.
+2. Open a meeting while signed out to show the membership requirement.
+3. Choose Daily Access at PHP 50 and create an account or sign in.
+4. Complete the no-charge checkout and return to the intended racing page.
+5. Open a race, inspect its declarations, then open a horse profile.
+6. Review participant connections, recorded form and published results.
+7. Save a favorite and open My membership to show the access period.
+
+VISUAL PRODUCTION BRIEF
+Use JOCKEY's existing forest green, gold and warm paper palette.
+Use a restrained editorial layout with large claim-led titles.
+Use actual platform captures for calendar, race, profile and checkout slides.
+Do not substitute invented interface screenshots or imply real payment collection.
+Keep data provenance and launch qualifications in the speaker notes where appropriate.
+
+DELIVERY
+JOCKEY-Stakeholder-Showcase.pptx: 12 editable slides with speaker notes.
+JOCKEY-Stakeholder-Showcase.pdf: shareable slide export.
+Built using Microsoft PowerPoint automation at the user's request to use another tool.
+All 12 slides rendered and visually reviewed; text bounds checked against the canvas.

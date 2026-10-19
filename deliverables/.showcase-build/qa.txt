@@ -1,0 +1,1 @@
+PASS: 12 slides exported; no text height overflow or out-of-canvas shapes.

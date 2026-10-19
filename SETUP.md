@@ -82,7 +82,7 @@ Use the repository's existing Django production settings, process manager/revers
 1. Open the website and select **Membership**, or open a locked race/statistics page.
 2. Choose **Daily Access — ₱50 / 24 hours** or **Monthly Membership — ₱499 / calendar month**.
 3. Sign in or create an account. The chosen plan and intended page are carried through authentication.
-4. Choose the plan to open its checkout frame and press **Complete preview payment**. No payment details or money are collected.
+4. Choose the plan to open its checkout frame and press **Pay & activate membership**. Every completed demo payment is approved. No payment details or money are collected.
 5. Continue to racing. **Account → My membership** shows the active period and lets you extend access.
 
 Daily access lasts exactly 24 hours. Monthly access ends at the same Philippine local time in the next calendar month, clamped to the final day for shorter months. Renewal queues after existing access; the membership page shows the combined continuous access end. There is no automatic renewal. The monthly plan saves ₱1,001 compared with 30 daily passes.
