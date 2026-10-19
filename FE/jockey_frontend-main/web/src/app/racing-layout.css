@@ -10,13 +10,13 @@
 }
 .racing-page:not(.learning-guide) > .dashboard-hero {
   display: block !important;
-  padding: clamp(20px, 3vw, 30px);
-  border-radius: 18px;
+  padding: 18px 22px;
+  border-radius: 14px;
 }
 .racing-page:not(.learning-guide) > .dashboard-hero h1 {
-  font-size: clamp(32px, 3.6vw, 46px);
+  font-size: clamp(26px, 2.5vw, 32px);
   line-height: 1.12;
-  margin: 10px 0 12px;
+  margin: 8px 0;
   overflow-wrap: anywhere;
   max-width: 28ch;
 }
@@ -30,16 +30,16 @@
   display: block;
   font-size: 12px;
   line-height: 1.6;
-  margin-top: 12px;
+  margin-top: 8px;
   max-width: 80ch;
 }
 .racing-page:not(.learning-guide) > .dashboard-hero .eyebrow { font-size: 10px; text-transform: uppercase; }
 .racing-page:not(.learning-guide) .web-card { border-radius: 14px; padding: clamp(18px, 2.3vw, 24px); }
-.racing-page:not(.learning-guide) .web-card h2 { font-size: clamp(24px, 2.2vw, 29px); line-height: 1.2; }
+.racing-page:not(.learning-guide) .web-card h2 { font-size: 22px; line-height: 1.25; }
 .racing-page .app-back-link { margin: 0; justify-self: start; min-height: 32px; }
 .racing-page .racing-calendar-layout { grid-template-columns: minmax(310px, .85fr) minmax(0, 1.25fr); gap: 20px; }
 .racing-page .racing-calendar { top: 92px; }
-.racing-page .racing-meetings .app-page-heading h1 { font-size: clamp(30px, 3vw, 38px); }
+.racing-page .racing-meetings .app-page-heading h1 { font-size: 28px; }
 .racing-page .racing-meetings .app-page-heading p { font-size: 13px; }
 .racing-page .racing-day { min-height: 42px; border-radius: 9px; }
 .racing-page .racing-month-nav h3 { font-size: 16px; }
@@ -123,5 +123,30 @@
   .directory-tabs a { min-height: 48px; font-size: 12px; }
   .participant-section-heading { gap: 6px; }
   .participant-section-heading > span { width: 100%; }
+}
+/* Education uses the same compact heading scale as the information pages. */
+.learning-guide .guide-hero { display: flex !important; gap: 24px; min-height: 0; padding: 20px 24px; border-radius: 14px; }
+.learning-guide .guide-hero > div:first-child { min-width: 0; flex: 1; }
+.learning-guide .guide-hero h1 { font-size: clamp(26px, 2.5vw, 32px); line-height: 1.15; margin: 8px 0; }
+.learning-guide .guide-hero p { font-size: 13px; line-height: 1.65; margin: 0; }
+.learning-guide .guide-hero .eyebrow { font-size: 10px; }
+.learning-guide .guide-hero .app-button { min-height: 38px; font-size: 12px; margin-top: 14px; padding: 0 14px; }
+.learning-guide .guide-hero-illustration { min-width: 180px; min-height: 120px; padding: 12px; }
+.learning-guide .guide-track-oval { width: 150px; height: 80px; gap: 6px; outline-offset: 10px; box-shadow: 0 0 0 20px #ffffff05; }
+.learning-guide .guide-track-oval svg { width: 20px; height: 20px; }
+.learning-guide .guide-track-oval span { font-size: 9px; }
+.learning-guide .guide-track-tag { display: none; }
+.learning-guide h2 { font-size: 24px; line-height: 1.25; }
+.learning-guide .guide-section-heading { margin-bottom: 18px; }
+.web-nav.jockey-navigation { min-height: 64px; }
+.jockey-navigation .brand-lockup { padding: 10px 0; }
+.jockey-navigation .brand-mark { width: 34px; height: 34px; border-radius: 10px; }
+.jockey-navigation .brand-lockup strong { font-size: 21px; }
+.site-navigation-links > a, .site-dropdown > button { min-height: 44px; }
+@media (max-width: 760px) {
+  .racing-page:not(.learning-guide) > .dashboard-hero { padding: 16px 18px; }
+  .learning-guide .guide-hero { padding: 18px; }
+  .learning-guide .guide-hero-illustration { display: none; }
+  .learning-guide h2 { font-size: 22px; }
 }
 @media (prefers-reduced-motion: reduce) { .racing-profile-link { transition: none; } }
