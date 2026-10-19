@@ -77,6 +77,10 @@ try:
     status, catalog = send('/racing/directory/horses/', access=signed_in['access'])
     assert status == 200 and catalog['count'] >= 128
     status, calendar = send('/racing/calendar/')
+    if not calendar['meetings']:
+        date = calendar['previous_date'] or calendar['next_date']
+        assert date, 'Run seed_platform before journey checks.'
+        status, calendar = send(f'/racing/calendar/?date={date}&year={date[:4]}&month={int(date[5:7])}')
     meeting_id = next(m['id'] for m in calendar['meetings'] if m['venue'] in ['Crown Valley Racecourse', 'Bayview Racing Park', 'Highland Downs'])
     status, meeting = send(f'/racing/meetings/{meeting_id}/', access=signed_in['access'])
     assert status == 200

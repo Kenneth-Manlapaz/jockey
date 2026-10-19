@@ -82,14 +82,16 @@ Use the repository's existing Django production settings, process manager/revers
 1. Open the website and select **Membership**, or open a locked race/statistics page.
 2. Choose **Daily Access — ₱50 / 24 hours** or **Monthly Membership — ₱499 / calendar month**.
 3. Sign in or create an account. The chosen plan and intended page are carried through authentication.
-4. Choose the plan to open its checkout frame and press **Pay & activate membership**. Every completed demo payment is approved. No payment details or money are collected.
+4. Choose the plan and press **Confirm payment** in the confirmation section. Every completed demo confirmation activates access. No payment details or money are collected. **Cancel** returns to the plans without activating anything.
 5. Continue to racing. **Account → My membership** shows the active period and lets you extend access.
 
 Daily access lasts exactly 24 hours. Monthly access ends at the same Philippine local time in the next calendar month, clamped to the final day for shorter months. Renewal queues after existing access; the membership page shows the combined continuous access end. There is no automatic renewal. The monthly plan saves ₱1,001 compared with 30 daily passes.
 
 Prices are stored in the `subscriptions.Plan` model and can be changed in Django admin. Checkout records snapshot the selected price, currency and period, so later plan edits do not alter an existing checkout. Admins can also grant or cancel subscriptions. Ordinary account registration does not grant racing access.
 
-The preview iframe is implemented in `web/src/app/subscription/payment-frame/route.ts`. The parent accepts only a matching frame window and checkout ID; the backend verifies ownership and preview mode before activating access. Confirmations are idempotent. Future real payment processing must verify a server-side provider webhook, amount/currency and transaction reference before issuing access; the iframe message must not become proof of a real payment.
+Membership confirmation uses ordinary buttons on the membership page. There is no payment iframe, provider script or cross-window message. Confirm directly requests demo membership activation from Django; the backend still stores the access period so protected race pages open normally. The demo flag `ENABLE_PREVIEW_SUBSCRIPTIONS=True` remains required on the backend. If the backend does not respond within 15 seconds, the page shows an error and re-enables Confirm; retrying a created checkout uses the same record to avoid duplicate access periods.
+
+For the 19 October button update, deploy the updated `FE/jockey_frontend-main/web` code, run `npm run build` there, and restart the frontend process. No database migration is needed. The old `/subscription/payment-frame` route has been removed. Future real payments require a separately implemented and verified payment-provider integration.
 
 ## Access rules and checks
 
@@ -97,6 +99,6 @@ Public: calendar dates/meeting summaries, learning guide, About, Contact and mem
 
 New access cookies are HttpOnly, scoped to the website and forwarded as bearer tokens for server rendering. Mutations continue to require explicit bearer authorization; cookie-only writes are not automatically authorized. Tokens and refresh cookies are cleared during logout. No page cache is used for subscriber data.
 
-Checks for this update: 86 backend tests, 82 existing frontend tests, 15 React DOM interaction tests, seven public/locked HTTP journey checks, lint/typechecks, migration drift checks and a production build. The local `scripts/verify_web_auth.py` additionally exercises account creation, membership activation, subscriber APIs and server-rendered race/horse pages, refresh and logout, then removes only its temporary verification account.
+Checks for this update: 86 backend tests, 82 existing frontend tests, 17 React DOM interaction tests, seven public/locked HTTP journey checks, lint/typechecks, migration drift checks and a production build. The local `scripts/verify_web_auth.py` additionally exercises account creation, membership activation, subscriber APIs and server-rendered race/horse pages, refresh and logout, then removes only its temporary verification account.
 
 MariaDB deployment and a real payment provider are not configured in this workspace. Browser discovery has returned no available browser; the checkout interaction has DOM tests and the membership/API/SSR flow has HTTP verification, while screenshot and physical-device QA remain unverified.

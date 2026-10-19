@@ -51,15 +51,22 @@ test('learning guide and navigation are public, complete and self-contained', as
 });
 
 test('calendar is public while meeting programs require membership', async () => {
-  const calendar = await json('/racing/calendar/');
+  let calendar = await json('/racing/calendar/');
+  let dateQuery = '';
+  if (!calendar.meetings.length) {
+    const date = calendar.previous_date || calendar.next_date;
+    assert.ok(date, 'Run seed_platform before journey checks.');
+    dateQuery = `?date=${date}&year=${date.slice(0, 4)}&month=${Number(date.slice(5, 7))}`;
+    calendar = await json(`/racing/calendar/${dateQuery}`);
+  }
   assert.ok(calendar.meetings.length, 'Run seed_platform before journey checks.');
   const meetingId = calendar.meetings[0].id;
   assert.equal((await fetch(`${api}/racing/meetings/${meetingId}/`)).status, 401);
   const page = await fetch(`${site}/meeting/${meetingId}`, { redirect: 'manual' });
   assert.equal(page.status, 307);
   assert.match(page.headers.get('location'), /subscribe\?next=/);
-  assert.match(await html('/'), /View membership plans/);
-  assert.doesNotMatch(await html('/'), /Sample data · Fictional racing information/);
+  assert.match(await html(`/${dateQuery}`), /View membership plans/);
+  assert.doesNotMatch(await html(`/${dateQuery}`), /Sample data · Fictional racing information/);
 });
 
 test('race results and statistics cannot be read through legacy or information APIs anonymously', async () => {
@@ -73,16 +80,12 @@ test('race results and statistics cannot be read through legacy or information A
   }
 });
 
-test('membership prices and local payment integration are available', async () => {
+test('membership plans are available and the obsolete payment frame is removed', async () => {
   const catalog = await json('/subscriptions/plans/');
   assert.equal(Number(catalog.plans.find(p => p.code === 'daily').price), 50);
   assert.equal(Number(catalog.plans.find(p => p.code === 'monthly').price), 499);
   assert.match(await html('/subscribe'), /JOCKEY MEMBERSHIP/);
-  const frame = await html('/subscription/payment-frame?checkout=11111111-1111-1111-1111-111111111111');
-  assert.match(frame, /Pay &amp; activate membership/);
-  assert.match(frame, /All demo payments are approved/);
-  assert.match(frame, /No money will be charged/);
-  assert.equal((await fetch(site + '/subscription/payment-frame?checkout=invalid')).status, 400);
+  assert.equal((await fetch(site + '/subscription/payment-frame?checkout=11111111-1111-1111-1111-111111111111')).status, 404);
 });
 
 test('anonymous private API requests remain unauthorized through the proxy', async () => {

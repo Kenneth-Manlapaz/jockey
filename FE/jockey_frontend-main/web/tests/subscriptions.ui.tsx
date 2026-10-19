@@ -34,27 +34,66 @@ test('daily and monthly plans have distinct validity, savings and a contextual l
   expect(mockPush.mock.calls[0][0]).toContain('/login?next=');
   expect(decodeURIComponent(mockPush.mock.calls[0][0])).toContain('plan=daily');
 });
-test('checkout frame must match both its source and checkout ID before activation', async () => {
+test('Confirm payment activates access directly without an iframe or payment provider', async () => {
   const id = '11111111-1111-1111-1111-111111111111';
   let confirmed = false;
   jest.mocked(request).mockImplementation(async path => {
     if (path.includes('plans')) return { plans, preview_checkout_enabled: true } as never;
-    if (path.includes('confirm-preview')) { confirmed = true; return { active: true } as never; }
+    if (path.includes('confirm-preview')) { confirmed = true; return { active: true, starts_at: '2026-10-19T08:00:00Z', expires_at: '2026-10-20T08:00:00Z' } as never; }
     if (path.includes('checkout')) return { id, plan: 'Daily Access', price: '50.00', currency: 'PHP', period: 'daily', provider: 'preview' } as never;
-    return { active: confirmed, subscription: confirmed ? { plan: 'Daily Access', starts_at: '2026-10-18T08:00:00Z', expires_at: '2026-10-19T08:00:00Z', period: 'daily' } : null } as never;
+    return { active: false, subscription: null } as never;
   });
   await act(async () => { root.render(<SubscriptionFlow destination="/race/42" />); });
   await click('Choose daily access');
-  const frame = host.querySelector('iframe')!;
-  expect(frame.getAttribute('sandbox')).toBe('allow-scripts');
-  expect(host.textContent).toContain('No money will be charged');
-  await act(async () => { window.dispatchEvent(new MessageEvent('message', { source: window, origin: 'null', data: { type: 'jockey.checkout.complete', checkoutId: id } })); });
+  expect(host.querySelector('iframe')).toBeNull();
+  expect(host.textContent).toContain('No payment details are needed');
   expect(confirmed).toBe(false);
-  await act(async () => { window.dispatchEvent(new MessageEvent('message', { source: frame.contentWindow, origin: 'null', data: { type: 'jockey.checkout.complete', checkoutId: id } })); });
+  expect(jest.mocked(request).mock.calls.some(([path]) => path.includes('checkout'))).toBe(false);
+  await click('Confirm payment');
   expect(confirmed).toBe(true);
   expect(host.textContent).toContain('Your membership is active');
   expect(host.querySelector('a[href="/race/42"]')).not.toBeNull();
+  expect(host.querySelector('#membership-checkout')).toBeNull();
+  expect(jest.mocked(request).mock.calls.filter(([path]) => path.includes('confirm-preview'))).toHaveLength(1);
 });
+
+test('Cancel closes confirmation without creating a checkout or activating access', async () => {
+  jest.mocked(request).mockImplementation(async path => (path.includes('plans') ? { plans, preview_checkout_enabled: true } : { active: false, subscription: null }) as never);
+  await act(async () => { root.render(<SubscriptionFlow />); });
+  await click('Choose monthly membership');
+  expect(host.querySelector('#membership-checkout')?.textContent).toContain('499');
+  await click('Cancel');
+  expect(host.querySelector('#membership-checkout')).toBeNull();
+  expect(jest.mocked(request).mock.calls.some(([path]) => path.includes('checkout') || path.includes('confirm-preview'))).toBe(false);
+});
+
+test('a stalled confirmation times out and retry reuses its checkout', async () => {
+  let confirmations = 0;
+  jest.mocked(request).mockImplementation(async path => {
+    if (path.includes('plans')) return { plans, preview_checkout_enabled: true } as never;
+    if (path.includes('checkout')) return { id: 'retry-checkout' } as never;
+    if (path.includes('confirm-preview')) {
+      confirmations++;
+      if (confirmations === 1) return new Promise(() => {});
+      return { starts_at: '2026-10-19T08:00:00Z', expires_at: '2026-10-20T08:00:00Z' } as never;
+    }
+    return { active: false, subscription: null } as never;
+  });
+  await act(async () => { root.render(<SubscriptionFlow />); });
+  await click('Choose daily access');
+  jest.useFakeTimers();
+  try {
+    await click('Confirm payment');
+    expect(host.textContent).toContain('Activating membership');
+    await act(async () => { jest.advanceTimersByTime(15000); });
+    expect(host.textContent).toContain('The server did not respond');
+    await click('Confirm payment');
+    expect(host.textContent).toContain('Your membership is active');
+    expect(jest.mocked(request).mock.calls.filter(([path]) => path.includes('/checkout/'))).toHaveLength(1);
+    expect(confirmations).toBe(2);
+  } finally { jest.useRealTimers(); }
+});
+
 test('server-disabled preview does not allow checkout activation', async () => {
   jest.mocked(request).mockImplementation(async path => (path.includes('plans') ? { plans, preview_checkout_enabled: false } : { active: false, subscription: null }) as never);
   await act(async () => { root.render(<SubscriptionFlow />); });
