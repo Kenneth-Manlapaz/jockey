@@ -117,3 +117,8 @@ The information website now groups the existing horse, jockey, trainer and owner
 Validation for this update: 12 new React DOM interaction tests, all 82 existing frontend tests, six HTTP journey checks against the production preview, both frontend typechecks/lints, and the Next.js production build passed. No backend model/data or native betting workflow was changed. Browser discovery still returned no available browser; screenshot and physical touch-device QA remain unverified.
 
 See `FE/jockey_frontend-main/web/docs/education-editorial-notes.md` for the content sources, illustrative assumptions, navigation behavior and test commands. The supplied update brief ended mid-sentence after the event-coverage example; all complete requirements in that attachment were addressed.
+
+
+## Data presentation follow-up - 19 October 2026
+
+Implemented the approved comparison with the supplied Dazo screenshots: metadata-rich directories, scoped participant statistics, compact program/finish tables, latest dividend summaries, filtered full history and comparison of two to four active runners in one race. Existing membership authorization, participation snapshots and dividend corrections remain in use. Timing stays individual, context-specific and before the selected race. No database migration, reseeding or payment configuration change is needed for this update. See `DATA_PRESENTATION_REVIEW.md` for scope/verification and `SETUP.md` for deployment and API filters.

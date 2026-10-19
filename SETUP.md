@@ -102,3 +102,25 @@ New access cookies are HttpOnly, scoped to the website and forwarded as bearer t
 Checks for this update: 86 backend tests, 82 existing frontend tests, 17 React DOM interaction tests, seven public/locked HTTP journey checks, lint/typechecks, migration drift checks and a production build. The local `scripts/verify_web_auth.py` additionally exercises account creation, membership activation, subscriber APIs and server-rendered race/horse pages, refresh and logout, then removes only its temporary verification account.
 
 MariaDB deployment and a real payment provider are not configured in this workspace. Browser discovery has returned no available browser; the checkout interaction has DOM tests and the membership/API/SSR flow has HTTP verification, while screenshot and physical-device QA remain unverified.
+
+
+## Data workspace update - 19 October 2026
+
+Deploy both the updated backend and `FE/jockey_frontend-main/web`. Restart the Django/Gunicorn process, run `npm run build` in the web directory, then restart its Next.js process. Use your existing process-manager names. This update adds read APIs and UI components; it has no model migration and requires no reseeding or environment-setting changes. Existing accounts, memberships and racing records remain in the configured database.
+
+Try **Racing Stats > Horses** for searchable metadata and current connections. Participant directories and profiles include scoped recorded statistics. Open a race, select two to four active runners, and press **Compare**. Horse/participant profiles now provide **Search full history**; filters survive paging, and a horse history opened from a race remains limited to earlier performances. Results show podiums and publication status, with finishing details and published dividends on the race page.
+
+New GET endpoints, under `/api/v1/racing/`, require the existing racing membership:
+
+| Endpoint | Filters and behavior |
+|---|---|
+| `filters/` | Available venues, surfaces and horse sex values |
+| `horses/{id}/history/` | `race` optionally limits history before that race |
+| `people/{kind}/{id}/history/` | Snapshot-based jockey/trainer/owner history |
+| `directory/horses/` | `search`, `trainer`, `owner`, `sex`, `color`, `birth_year`; sorts `name`, `-name`, `birth_year`, `-birth_year`, `trainer`, `owner` |
+| `directory/{jockeys,trainers,owners}/` | `search`, date/venue scope for statistics; sorts `name`, `-name` |
+| `results/` | Published podium, winning time and publication status; date/venue grouping on the website |
+
+History supports `from`, `to`, `year`, `venue` (ID), `distance` (metres), `surface`, `status` (official/corrected), `horse` (name), and `sort` (`-date`, `date`, `finish`). Results support date/race filters, including exact `date`, and provisional/official/corrected status. Dates use `YYYY-MM-DD`. Paginated lists support `page` and `page_size` (maximum 100). History statistics describe the full filtered archive rather than the current page. Recorded finishes include DQ in rate denominators; wins and placings exclude DQ; dead heats count at the recorded position; top three includes wins.
+
+Checks for the data update: 93 backend tests, 20 web UI tests, seven HTTP checks and the temporary-account subscriber verification passed. The latter now covers richer directories, full horse history, valid/invalid runner comparison and grouped results. No original account count changed. Browser visual QA remains unavailable; see `DATA_PRESENTATION_REVIEW.md` for the remaining data-source and device-validation limits.

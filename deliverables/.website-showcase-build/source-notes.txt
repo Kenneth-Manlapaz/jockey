@@ -1,0 +1,16 @@
+All embedded image files are exact matches to the user-supplied ppt images folder. Presentation framing uses native PowerPoint cropping and never edits source pixels.
+Images used:
+aboutus.png
+horses.png
+horses_zoomed.png
+jockeys_zoomed.png
+learn_to_race_free.png
+no membership homepage.png
+owners_zoomed.png
+paid_homepage.png
+paid_racing_info.png
+pay_membership.png
+races.png
+trainers_zoomed.png
+
+Narrative sources: SETUP.md and RECONSTRUCTION.md. Directory counts follow screenshots from the hosted website, rather than local workspace counts.

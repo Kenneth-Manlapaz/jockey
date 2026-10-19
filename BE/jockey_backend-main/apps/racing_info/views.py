@@ -1,6 +1,6 @@
 from datetime import date
 from zoneinfo import ZoneInfo
-from django.db.models import Count, Q
+from django.db.models import Count, Q, F, Prefetch
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
@@ -13,6 +13,11 @@ from apps.horses.models import Horse
 from apps.participants.models import Jockey, Trainer, Owner
 from .models import BettingEvent, PUBLIC_STATUSES
 from .selectors import participant, history_queryset, performance, form, declared_entry
+from .exploration import integer, race_filters, history_filters, recorded_stats, statistic_annotations, rates, STATISTICS_BASIS
+from apps.horses.models import Sex
+from apps.venues.models import Venue
+from apps.core.choices import Surface
+from apps.results.models import RaceResultPlacement
 from apps.subscriptions.permissions import HasRacingAccess
 from apps.subscriptions.services import active_subscription
 
@@ -29,7 +34,7 @@ def race_summary(r):
             'race_date': r.race_date, 'venue': r.venue.name, 'post_time': r.post_time,
             'timezone': r.meeting.timezone if r.meeting_id else 'Asia/Manila',
             'distance_m': r.distance_m, 'surface': r.surface, 'status': r.status,
-            'entries_count': r.entries.count(), 'is_demo': r.is_demo}
+            'entries_count': r._declared_count if hasattr(r, '_declared_count') else r.entries.count(), 'is_demo': r.is_demo}
 
 
 def meeting_summary(m):
@@ -102,7 +107,7 @@ def program(request, pk):
                    'decision': result.stewards_notes, 'protest_filed': result.protest_filed,
                    'published_at': result.posted_at, 'official_at': result.made_official_at,
                    'placements': [performance(p) for p in result.placements.select_related('result__race__venue',
-                       'result__race__category', 'entry__horse', 'entry__jockey', 'entry__trainer', 'entry__owner')],
+                       'result__race__category', 'entry__horse', 'entry__jockey', 'entry__trainer', 'entry__owner').prefetch_related('result__sectionals').order_by('finish_position', 'entry__horse_number')],
                    'sectionals': list(result.sectionals.values('entry_id', 'label', 'sequence', 'time_ms')),
                    'revision_count': result.revisions.count()} if published else None})
 
@@ -133,12 +138,43 @@ DIRECTORIES = {'horses': (Horse, 'name', 'horse'), 'jockeys': (Jockey, 'full_nam
 def directory(request, kind):
     if kind not in DIRECTORIES:
         raise ValidationError('Unknown directory.')
-    model, field, _ = DIRECTORIES[kind]
-    qs = model.objects.filter(**{f'{field}__icontains': request.query_params.get('search', '')}).order_by(field, 'pk')
+    model, field, relation = DIRECTORIES[kind]
+    params = request.query_params
+    qs = model.objects.filter(**{f'{field}__icontains': params.get('search', '')})
+    sorts = {'name': field, '-name': '-' + field}
+    if kind == 'horses':
+        qs = qs.select_related('owner', 'trainer')
+        if params.get('sex'):
+            if params['sex'] not in Sex.values:
+                raise ValidationError({'sex': 'Unknown sex.'})
+            qs = qs.filter(sex=params['sex'])
+        for key, lookup in [('trainer', 'trainer__full_name'), ('owner', 'owner__name'), ('color', 'color')]:
+            if params.get(key):
+                qs = qs.filter(**{lookup + '__icontains': params[key]})
+        birth_year = integer(params, 'birth_year', 9998)
+        if birth_year:
+            qs = qs.filter(birth_year=birth_year)
+        sorts.update({'birth_year': 'birth_year', '-birth_year': '-birth_year', 'trainer': 'trainer__full_name', 'owner': 'owner__name'})
+    sort = params.get('sort', 'name')
+    if sort not in sorts:
+        raise ValidationError({'sort': 'Unsupported sort order.'})
+    ordering = sorts[sort]
+    qs = qs.order_by(F(ordering.lstrip('-')).desc(nulls_last=True) if ordering.startswith('-') else F(ordering).asc(nulls_last=True), 'pk')
     from apps.core.pagination import StandardPagination
     paginator = StandardPagination()
     page = paginator.paginate_queryset(qs, request)
-    return paginator.get_paginated_response([participant(p) for p in page])
+    if kind == 'horses':
+        rows = [{**participant(h), 'sex': h.sex, 'birth_year': h.birth_year, 'color': h.color,
+                 'country_of_origin': h.country_of_origin, 'current_trainer': participant(h.trainer),
+                 'current_owner': participant(h.owner)} for h in page]
+    else:
+        key = f'participation_snapshot__{relation}__id'
+        history = history_filters(params, history_queryset()).filter(**{key + '__in': [p.pk for p in page]})
+        grouped = {int(row[key]): rates({k: row[k] for k in statistic_annotations()})
+                   for row in history.order_by().values(key).annotate(**statistic_annotations())}
+        empty = rates({k: 0 for k in statistic_annotations()})
+        rows = [{**participant(p), 'stats': grouped.get(p.pk, empty)} for p in page]
+    return paginator.get_paginated_response(rows)
 
 
 @api_view(['GET'])
@@ -149,29 +185,46 @@ def person_detail(request, kind, pk):
     model, _, relation = DIRECTORIES[kind]
     person = get_object_or_404(model, pk=pk)
     entries = RaceEntry.objects.filter(**{f'{relation}_id': pk})
-    qs = history_queryset().filter(**{f'participation_snapshot__{relation}__id': pk})
-    horses = {e['horse_id']: e['horse__name'] for e in entries.values('horse_id', 'horse__name')}
-    horses.update({p.entry.horse_id: p.entry.horse.name for p in qs})
+    qs = history_filters(request.query_params, history_queryset().filter(**{f'participation_snapshot__{relation}__id': pk}))
+    historical_ids = qs.order_by().values_list('participation_snapshot__horse__id', flat=True).distinct()
+    ids = set(entries.order_by().values_list('horse_id', flat=True).distinct()) | {int(i) for i in historical_ids if i is not None}
+    horses = Horse.objects.filter(pk__in=ids).order_by('name', 'pk')
+    current = Horse.objects.filter(**{f'{relation}_id': pk}).order_by('name', 'pk') if relation in ['owner', 'trainer'] else Horse.objects.none()
+    groups = qs.order_by().values('participation_snapshot__horse__id', 'participation_snapshot__horse__name').annotate(
+        finishes=Count('pk'), wins=Count('pk', filter=Q(finish_position=1, is_disqualified=False))).order_by('-wins', 'participation_snapshot__horse__name', 'participation_snapshot__horse__id')
     return Response({**participant(person), 'kind': kind, 'bio': getattr(person, 'bio', None),
-                     'stats': {'recorded_finishes': qs.count(), 'wins': qs.filter(finish_position=1, is_disqualified=False).count(),
-                               'top_three': qs.filter(finish_position__lte=3, is_disqualified=False).count()},
-                     'basis': 'All recorded official/corrected finishes for this participant; top three includes wins. Disqualifications excluded from wins/placings.',
-                     'horses': [{'horse_id': key, 'horse__name': value} for key, value in sorted(horses.items())],
+                     'stats': recorded_stats(qs), 'basis': STATISTICS_BASIS,
+                     'horses_count': horses.count(), 'horses': [{'horse_id': h.pk, 'horse__name': h.name} for h in horses[:50]],
+                     'current_horses_count': current.count(), 'current_horses': [participant(h) for h in current[:50]],
                      'recent': [performance(p) for p in qs.order_by('-result__race__post_time', '-pk')[:20]],
-                     'combinations': list(qs.values('entry__horse_id', 'entry__horse__name').annotate(
-                         finishes=Count('pk'), wins=Count('pk', filter=Q(finish_position=1, is_disqualified=False))))})
+                     'combinations_count': groups.count(),
+                     'combinations': [{'entry__horse_id': row['participation_snapshot__horse__id'],
+                         'entry__horse__name': row['participation_snapshot__horse__name'], 'finishes': row['finishes'], 'wins': row['wins']} for row in groups[:20]]})
 
 
 @api_view(['GET'])
 @permission_classes([HasRacingAccess])
 def results(request):
-    qs = Race.objects.filter(result__status__in=PUBLIC_STATUSES).select_related('venue', 'meeting').order_by('-race_date', '-race_number')
-    if request.query_params.get('date'):
-        qs = qs.filter(race_date=parsed_date(request.query_params['date']))
+    params = request.query_params
+    qs = race_filters(params, Race.objects.filter(result__status__in=PUBLIC_STATUSES)).select_related('venue', 'meeting', 'result')
+    if params.get('status'):
+        if params['status'] not in PUBLIC_STATUSES:
+            raise ValidationError({'status': 'Unknown publication status.'})
+        qs = qs.filter(result__status=params['status'])
+    qs = qs.annotate(_declared_count=Count('entries', distinct=True)).prefetch_related(
+        Prefetch('result__placements', queryset=RaceResultPlacement.objects.select_related('entry__horse').order_by('finish_position', 'entry__horse_number'))).order_by('-race_date', 'venue__name', 'venue_id', '-race_number', '-pk')
     from apps.core.pagination import StandardPagination
     paginator = StandardPagination()
     page = paginator.paginate_queryset(qs, request)
-    return paginator.get_paginated_response([{**race_summary(r), 'result_status': r.result.status} for r in page])
+    rows = []
+    for race in page:
+        podium = [{'finish_position': p.finish_position, 'horse_number': p.entry.horse_number,
+                   'horse': p.participation_snapshot.get('horse') or participant(p.entry.horse), 'is_dead_heat': p.is_dead_heat}
+                  for p in race.result.placements.all() if 1 <= p.finish_position <= 3 and not p.is_disqualified]
+        rows.append({**race_summary(race), 'result_status': race.result.status,
+                     'winning_time_ms': race.result.winning_time_ms, 'podium': podium,
+                     'winners': [p for p in podium if p['finish_position'] == 1], 'published_at': race.result.posted_at})
+    return paginator.get_paginated_response(rows)
 
 
 @api_view(['GET'])
@@ -186,3 +239,47 @@ def access(request):
     # No paid entitlement is fabricated. A future subscription service owns this decision.
     return Response({'favorites': True, 'premium_analytics': active_subscription(request.user) is not None,
                      'premium_status': 'active' if active_subscription(request.user) else 'subscription_required'})
+
+
+@api_view(['GET'])
+@permission_classes([HasRacingAccess])
+def filter_options(request):
+    return Response({'venues': list(Venue.objects.order_by('name', 'pk').values('id', 'name')),
+                     'surfaces': list(Surface.values), 'sexes': list(Sex.values)})
+
+
+def history_response(request, qs):
+    qs = history_filters(request.query_params, qs)
+    sort = request.query_params.get('sort', '-date')
+    orders = {'-date': ('-result__race__post_time', '-pk'), 'date': ('result__race__post_time', 'pk'),
+              'finish': ('is_disqualified', 'finish_position', '-result__race__post_time', '-pk')}
+    if sort not in orders:
+        raise ValidationError({'sort': 'Choose newest, oldest or finish order.'})
+    from apps.core.pagination import StandardPagination
+    paginator = StandardPagination()
+    page = paginator.paginate_queryset(qs.order_by(*orders[sort]), request)
+    response = paginator.get_paginated_response([performance(p) for p in page])
+    response.data.update(stats=recorded_stats(qs), basis=STATISTICS_BASIS)
+    return response
+
+
+@api_view(['GET'])
+@permission_classes([HasRacingAccess])
+def horse_history(request, pk):
+    get_object_or_404(Horse, pk=pk)
+    qs = history_queryset().filter(entry__horse_id=pk)
+    context = integer(request.query_params, 'race', 4294967295)
+    if context:
+        race = get_object_or_404(Race, pk=context)
+        qs = qs.filter(result__race__post_time__lt=race.post_time)
+    return history_response(request, qs)
+
+
+@api_view(['GET'])
+@permission_classes([HasRacingAccess])
+def person_history(request, kind, pk):
+    if kind not in DIRECTORIES or kind == 'horses':
+        raise ValidationError('Unknown participant type.')
+    model, _, relation = DIRECTORIES[kind]
+    get_object_or_404(model, pk=pk)
+    return history_response(request, history_queryset().filter(**{f'participation_snapshot__{relation}__id': pk}))

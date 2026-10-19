@@ -4,8 +4,12 @@ import { cookies } from 'next/headers';
 import { API_BASE_URL } from '@/lib/config';
 
 export type Person = { id: number; name: string };
+export type RecordedStats = { recorded_finishes: number; wins: number; top_three: number; seconds?: number; thirds?: number; win_rate?: number | null; top_three_rate?: number | null; first_date?: string | null; last_date?: string | null };
+export type DirectoryPerson = Person & { sex?: string | null; birth_year?: number | null; color?: string | null; country_of_origin?: string | null; current_owner?: Person | null; current_trainer?: Person | null; stats?: RecordedStats };
+export type FilterOptions = { venues: Person[]; surfaces: string[]; sexes: string[] };
+export type Query = Record<string, string | string[] | undefined>;
 export type Performance = {
-  race_id: number; race_number: number; horse: Person; date: string; venue: string;
+  race_id: number; race_number: number; horse_number?: number; horse: Person; date: string; venue: string;
   distance_m: number; surface: string; classification: string | null;
   finish_position: number; time_ms: number | null; margin_lengths: string | null;
   is_dead_heat: boolean; is_disqualified: boolean; jockey: Person | null;
@@ -16,7 +20,8 @@ export type Performance = {
 export type Form = {
   recent: Performance[]; comparable: Performance[]; best_time_ms: number | null;
   best_time_window_days: number; basis: string;
-  stats: { recorded_finishes: number; wins: number; top_three: number }; trend: Performance[];
+  stats: RecordedStats; trend: Performance[];
+  comparable_count?: number; timed_comparable_count?: number; best_time_reason?: string | null;
 };
 export type Race = {
   id: number; meeting_id: number; race_number: number; name: string; race_date: string;
@@ -62,8 +67,11 @@ export type Horse = { id: number; name: string; sex: string | null; birth_year: 
   is_demo: boolean; current_owner: Person | null; current_trainer: Person | null; form: Form };
 export type Participant = Person & { kind: string; bio: string | null; stats: Form['stats']; basis: string;
   horses: { horse_id: number; horse__name: string }[]; recent: Performance[];
+  horses_count?: number; current_horses?: Person[]; current_horses_count?: number; combinations_count?: number;
   combinations: { entry__horse_id: number; entry__horse__name: string; finishes: number; wins: number }[] };
 export type Page<T> = { count: number; next: string | null; previous: string | null; results: T[] };
+export type HistoryPage = Page<Performance> & { stats: RecordedStats; basis: string };
+export type ResultSummary = Race & { result_status: string; winning_time_ms: number | null; winners: { horse: Person; horse_number: number; is_dead_heat: boolean }[]; podium: { horse: Person; horse_number: number; finish_position: number; is_dead_heat: boolean }[] };
 
 export class RacingApiError extends Error { constructor(public status: number, message: string) { super(message); } }
 export async function racing<T>(path: string, options: { gate?: boolean } = {}): Promise<T> {
@@ -81,9 +89,4 @@ export async function racing<T>(path: string, options: { gate?: boolean } = {}):
   if (!response.ok) throw new RacingApiError(response.status, response.status === 400 ? 'Check the requested date or filter and try again.' : 'Racing information could not be loaded.');
   return response.json() as Promise<T>;
 }
-export function todayManila() { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Manila', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()); }
-export function clock(value: number | null) { if (value == null) return 'Unavailable'; return `${Math.floor(value / 60000)}:${((value % 60000) / 1000).toFixed(2).padStart(5, '0')}`; }
-export function postTime(race: Race) { return new Intl.DateTimeFormat('en-PH', { hour: 'numeric', minute: '2-digit', timeZone: race.timezone }).format(new Date(race.post_time)); }
-export function dateLabel(date: string) { return new Intl.DateTimeFormat('en-PH', { dateStyle: 'full', timeZone: 'UTC' }).format(new Date(`${date}T00:00:00Z`)); }
-export function calendarLink(date: string) { return `/?date=${date}&year=${date.slice(0, 4)}&month=${Number(date.slice(5, 7))}`; }
-export function sourceLabel(source: string | null | undefined) { return !source ? 'Unavailable' : /sample|fictional|development/i.test(source) ? 'JOCKEY program archive' : source; }
+export { queryString, timeBasis, todayManila, clock, postTime, dateLabel, calendarLink, sourceLabel } from './racing-format';

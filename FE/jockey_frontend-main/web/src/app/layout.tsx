@@ -12,6 +12,7 @@ import './site-navigation.css';
 import './education.css';
 import './subscriptions.css';
 import './racing-layout.css';
+import './racing-data.css';
 
 export const metadata: Metadata = {
   title: 'Philippine Jockey',

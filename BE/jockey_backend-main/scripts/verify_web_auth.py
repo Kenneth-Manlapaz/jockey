@@ -90,13 +90,13 @@ try:
     # No Authorization header: SSR must use the HttpOnly access cookie set by the proxy.
     with opener.open(f'http://127.0.0.1:3000/race/{race_id}', timeout=30) as page:
         rendered = page.read().decode()
-        assert 'Declared entries' in rendered and 'Sample data ·' not in rendered
+        assert 'Declared program' in rendered and 'Sample data ·' not in rendered
     with opener.open(f"http://127.0.0.1:3000/horse/{program['entries'][0]['horse']['id']}?race={race_id}", timeout=30) as page:
         assert 'Comparable form' in page.read().decode()
     for kind in ['horses', 'jockeys', 'trainers', 'owners']:
         with opener.open(f'http://127.0.0.1:3000/directory/{kind}', timeout=30) as page:
             rendered = page.read().decode()
-            assert 'directory-tabs' in rendered and 'racing-profile-list' in rendered
+            assert 'directory-tabs' in rendered and 'directory-data-table' in rendered
             assert f'aria-label="Search {kind}"' in rendered
         if kind != 'horses':
             status, people = send(f'/racing/directory/{kind}/', access=signed_in['access'])
@@ -104,8 +104,25 @@ try:
             participant_id = people['results'][0]['id']
             with opener.open(f'http://127.0.0.1:3000/people/{kind}/{participant_id}', timeout=30) as page:
                 rendered = page.read().decode()
-                assert 'participant-stats' in rendered and 'participant-connections' in rendered
+                assert 'record-statistics' in rendered and 'participant-connections' in rendered
                 assert 'racing-profile-list compact' in rendered
+    horse_id = program['entries'][0]['horse']['id']
+    status, history = send(f'/racing/horses/{horse_id}/history/?race={race_id}&page_size=2', access=signed_in['access'])
+    assert status == 200 and history['stats']['recorded_finishes'] == history['count']
+    assert len(history['results']) <= 2
+    for performance in history['results']:
+        assert performance['date'] <= program['race_date']
+    with opener.open(f'http://127.0.0.1:3000/horse/{horse_id}/history?race={race_id}', timeout=30) as page:
+        assert 'matching finishes' in page.read().decode()
+    active = [e['horse']['id'] for e in program['entries'] if e['status'] not in ['scratched', 'withdrawn']]
+    assert len(active) >= 2
+    comparison = '&'.join(f'horse={horse}' for horse in active[:2])
+    with opener.open(f'http://127.0.0.1:3000/race/{race_id}/compare?{comparison}', timeout=30) as page:
+        assert 'comparison-table' in page.read().decode()
+    with opener.open(f'http://127.0.0.1:3000/race/{race_id}/compare?horse={active[0]}', timeout=30) as page:
+        assert 'Choose two to four active runners' in page.read().decode()
+    with opener.open('http://127.0.0.1:3000/results?status=official', timeout=30) as page:
+        assert 'result-summary-table' in page.read().decode()
     with opener.open('http://127.0.0.1:3000/directory/horses?search=zzzz-no-such-profile', timeout=30) as page:
         assert 'No profiles found' in page.read().decode()
     status, published = send('/racing/results/', access=signed_in['access'])
